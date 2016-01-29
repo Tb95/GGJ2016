@@ -3,12 +3,12 @@ using System.Collections;
 
 public class Spider : MonoBehaviour {
 
-	enum Movement {chase, chaseZigZag, chaseWandering};
+	public enum Movement {chase, chaseZigZag, chaseWandering};
 
 	public Movement movement = Movement.chase;
 	public int speed;
 	GameObject player;
-
+	/*
 	// Use this for initialization
 	void Start () {
 		player = GameObject.FindGameObjectWithTag ("Player");
@@ -68,5 +68,5 @@ public class Spider : MonoBehaviour {
 			transform.position = (player.transform.position - transform.position).normalized * speed * Time.deltaTime;
 		}
 		transform.LookAt (player.transform.position);
-	}
+	}*/
 }
