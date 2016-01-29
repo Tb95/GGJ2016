@@ -15,8 +15,13 @@ public class Player : MonoBehaviour {
 
     public bool CanSeeTarget(int raggio)
     {
-        GameObject 
-        if Player.transform
+        GameObject player = new GameObject.FindWithTag("Player");
+        GameObject enemy = new GameObject.FindWithTag("Enemy");
+
+        if (Distance(player.transform.position, player.transform.enemy) < raggio)
+            return true;
+        else
+            return false;
     }
 
 }
