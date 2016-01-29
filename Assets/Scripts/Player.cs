@@ -3,26 +3,12 @@ using System.Collections;
 
 public class Player : MonoBehaviour {
 
-    private int vita;
-    private int velocità;
-    private int danno;
+    public int vita;
+    public int danno;
+    public int velocità;
 
-    public int Vita
+    public void move (Vector3 movimento)
     {
-        get { return vita; }
-        set { vita = value; }
+        gameobject.transform.position = gameobject.transform.position + movimento;
     }
-
-    public int Velocità
-    {
-        get { return velocità; }
-        set { velocità = value; }
-    }
-    public int Danno
-    {
-        get { return danno; }
-        set { danno = value; }
-    }
-
-    public void 
 }
