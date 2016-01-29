@@ -37,7 +37,7 @@ public class InputManager : MonoBehaviour
     void CheckHand()
     {
         bool none = true;
-
+        Debug.Log(Input.GetAxis("HorizontalL1"));
         if (Input.GetAxis("HorizontalL1") != 0 || Input.GetAxis("VerticalL1") != 0 || Input.GetAxis("DPadX") != 0 ||
             Input.GetAxis("DPadY") != 0 || Input.GetAxis("TriggerL") != 0 || Input.GetKey(KeyCode.Joystick1Button4))
         {
