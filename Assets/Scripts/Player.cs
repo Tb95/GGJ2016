@@ -6,22 +6,26 @@ public class Player : MonoBehaviour {
     public int vita;
     public int danno;
     public int velocità;
+    public int velocitàAttacco;
     public int raggio;
 
     public void move (Vector3 movimento)
     {
-        gameobject.transform.position = gameobject.transform.position + movimento;
+        movimento = movimento.normalized;
+        movimento = movimento * velocità * Time.deltaTime;
+        transform.position = transform.position + movimento;
     }
 
-    public bool CanSeeTarget(int raggio)
+    public void attack()
     {
-        GameObject player = new GameObject.FindWithTag("Player");
-        GameObject enemy = new GameObject.FindWithTag("Enemy");
-
-        if (Distance(player.transform.position, player.transform.enemy) < raggio)
-            return true;
-        else
-            return false;
+        GameObject fireball = GameObject.FindWithTag("FireBall");
+        fireball.SetActive(true);
+        fireball.transform.position = fireball.transform.position + new Vector3(0, velocitàAttacco * Time.deltaTime, 0);
+        Destroy(fireball, 0.5f);
+        Instantiate(fireball);
+        fireball.SetActive(false);
     }
+
+
 
 }
