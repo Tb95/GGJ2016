@@ -25,7 +25,4 @@ public class Player : MonoBehaviour {
         Instantiate(fireball);
         fireball.SetActive(false);
     }
-
-
-
 }
