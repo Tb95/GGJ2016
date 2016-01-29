@@ -11,7 +11,7 @@ public class InputManager : MonoBehaviour
     
     Side _currentSide;
     Side CurrentSide
-    {
+	{
         get { return _currentSide; }
         set 
         {
