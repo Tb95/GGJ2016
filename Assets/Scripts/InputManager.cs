@@ -30,12 +30,16 @@ public class InputManager : MonoBehaviour
     }
     Side currentSidePosition;
     Player player;
+    bool isPause;
+    Openpause pause;
 
     void Start()
     {
         CurrentSideButton = Side.None;
         currentSidePosition = Side.None;
         player = GetComponent<Player>();
+        isPause = false;
+        pause = GetComponent<Openpause>();
     }
 
     void Update()
@@ -44,6 +48,7 @@ public class InputManager : MonoBehaviour
         CheckHand();
         Move();
         Fire();
+        CheckPause();
     }
 
     void CheckHand()
@@ -131,5 +136,22 @@ public class InputManager : MonoBehaviour
         }
         else
             currentSidePosition = Side.None;
+    }
+
+    void CheckPause()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if(isPause)
+            {
+                pause.Resume();
+                isPause = false;
+            }
+            else
+            {
+                pause.Escpress();
+                isPause = true;
+            }
+        }
     }
 }

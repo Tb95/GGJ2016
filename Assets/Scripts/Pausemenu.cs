@@ -25,11 +25,6 @@ public class Pausemenu : MonoBehaviour {
         Optionmenu.gameObject.SetActive(false);
 	
 	}
-
-    public void Resumepress()
-    {
-        //ritrno al gioco
-    }
 	
     public void Optionpress ()
     {
@@ -47,7 +42,7 @@ public class Pausemenu : MonoBehaviour {
 
     public void Yespress ()
     {
-        //lancio la scena del main menu
+        Application.LoadLevel(0);
     }
 
     public void backpress ()
@@ -57,6 +52,7 @@ public class Pausemenu : MonoBehaviour {
         Resumebutton.gameObject.SetActive(true);
         Optionbutton.gameObject.SetActive(true);
         Mainbutton.gameObject.SetActive(true);
+        Buttoncanvas.gameObject.SetActive(true);
     }
 
     
