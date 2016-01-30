@@ -233,6 +233,7 @@ public class InputManager : MonoBehaviour
 				// SPIDER EXPLOSION!!!
 				Debug.Log("Tango down!");
 				Destroy (possibleSpiderCombos [i].spider.gameObject);
+				possibleSpiderCombos.Remove (possibleSpiderCombos [i]);
 				buttonTimeSequence.resetSequence();
 			}
 		}

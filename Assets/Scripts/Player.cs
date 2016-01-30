@@ -18,6 +18,8 @@ public class Player : MonoBehaviour {
     float nextAvailableTimeForAttack;
     Health health;
 
+	public AudioClip antShoot;
+
     void Start ()
     {
         myRigidbody = GetComponent<Rigidbody>();
@@ -45,10 +47,15 @@ public class Player : MonoBehaviour {
     {
         if (Time.realtimeSinceStartup > nextAvailableTimeForAttack)
         {
+			// Instantiate a bullet
             GameObject bullet = Instantiate(bulletPrefab, transform.position + transform.forward * 2, transform.rotation) as GameObject;
             bullet.GetComponent<Rigidbody>().velocity = transform.forward * velocitàAttacco;
             Destroy(bullet, raggio / velocitàAttacco);
             nextAvailableTimeForAttack = Time.realtimeSinceStartup + attackRate;
+
+			// Play sound
+			GetComponent<AudioSource>().clip = antShoot;
+			GetComponent<AudioSource>().Play();
         }
     }
 
