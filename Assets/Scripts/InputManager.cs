@@ -10,6 +10,7 @@ public class InputManager : MonoBehaviour
         Left,
         Right
     }
+    public float twoHandsCooldown;
     
     Side _currentSideButton;
     Side CurrentSideButton
@@ -17,14 +18,16 @@ public class InputManager : MonoBehaviour
         get { return _currentSideButton; }
         set 
         {
-            if (_currentSideButton == Side.None || value == Side.None)
+            if (Time.realtimeSinceStartup < nextTwoHands)
+                return;
+
+            if (_currentSideButton == Side.None || value == Side.None || currentSidePosition == Side.None)
                 _currentSideButton = value;
             else if ((_currentSideButton == Side.Right && value == Side.Left) || (_currentSideButton == Side.Left && value == Side.Right))
             {
-                Debug.Log("DUE MANIII!! MUORIIII!!!11!!!11!");//Player.TwoHands()
-                Debug.DrawLine(transform.position + Vector3.up + new Vector3(-10, 0, -10), transform.position + Vector3.up + new Vector3(10, 0, 10), Color.red, 2);
-                Debug.DrawLine(transform.position + Vector3.up + new Vector3(10, 0, -10), transform.position + Vector3.up + new Vector3(-10, 0, 10), Color.red, 2);
-                //_currentSideButton = value;
+                Debug.Log("DUE MANIII!! MUORIIII!!!11!!!11!");
+                player.Hit(1);
+                nextTwoHands = Time.realtimeSinceStartup + twoHandsCooldown;
             }
         }
     }
@@ -32,6 +35,7 @@ public class InputManager : MonoBehaviour
     Player player;
     bool isPause;
     Openpause pause;
+    float nextTwoHands;
 
     void Start()
     {
@@ -40,6 +44,7 @@ public class InputManager : MonoBehaviour
         player = GetComponent<Player>();
         isPause = false;
         pause = GetComponent<Openpause>();
+        nextTwoHands = Time.realtimeSinceStartup;
     }
 
     void Update()

@@ -16,11 +16,18 @@ public class Player : MonoBehaviour {
 
     Rigidbody myRigidbody;
     float nextAvailableTimeForAttack;
+    Health health;
 
     void Start ()
     {
         myRigidbody = GetComponent<Rigidbody>();
         nextAvailableTimeForAttack = Time.realtimeSinceStartup;
+        health = GetComponent<Health>();
+    }
+
+    void Update()
+    {
+        health.ChangeHeartsNumber(vita);
     }
 
     public void move (Vector3 movimento)
@@ -43,5 +50,16 @@ public class Player : MonoBehaviour {
             Destroy(bullet, raggio / velocitàAttacco);
             nextAvailableTimeForAttack = Time.realtimeSinceStartup + attackRate;
         }
+    }
+
+    public void Hit(int damage)
+    {
+        vita -= damage;
+        if (vita <= 0)
+        {
+            //Dieeee
+        }
+        else
+            health.ChangeHeartsNumber(vita);
     }
 }

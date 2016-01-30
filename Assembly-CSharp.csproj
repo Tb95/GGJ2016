@@ -55,6 +55,7 @@
      <Compile Include="Assets\Game Jam Menu Template\Scripts\StartOptions.cs" />
      <Compile Include="Assets\Scripts\BlueRedManager.cs" />
      <Compile Include="Assets\Scripts\CameraFollow.cs" />
+     <Compile Include="Assets\Scripts\Health.cs" />
      <Compile Include="Assets\Scripts\InputManager.cs" />
      <Compile Include="Assets\Scripts\LoopRoundMusic.cs" />
      <Compile Include="Assets\Scripts\Mainmenu.cs" />
