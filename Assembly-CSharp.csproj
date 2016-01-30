@@ -56,6 +56,7 @@
      <Compile Include="Assets\Scripts\InputManager.cs" />
      <Compile Include="Assets\Scripts\Mainmenu.cs" />
      <Compile Include="Assets\Scripts\Openpause.cs" />
+     <Compile Include="Assets\Scripts\OptionMusic.cs" />
      <Compile Include="Assets\Scripts\Pausemenu.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\SpawnGameObjects.cs" />
