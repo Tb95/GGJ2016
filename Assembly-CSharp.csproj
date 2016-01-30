@@ -54,8 +54,13 @@
      <Compile Include="Assets\Game Jam Menu Template\Scripts\ShowPanels.cs" />
      <Compile Include="Assets\Game Jam Menu Template\Scripts\StartOptions.cs" />
      <Compile Include="Assets\Scripts\BlueRedManager.cs" />
+<<<<<<< HEAD
      <Compile Include="Assets\Scripts\ButtonTimeSequence.cs" />
      <Compile Include="Assets\Scripts\ButtonsManager.cs" />
+=======
+     <Compile Include="Assets\Scripts\CameraFollow.cs" />
+     <Compile Include="Assets\Scripts\Health.cs" />
+>>>>>>> bbbe7650ece29a2352af6a199c43393d7ef898c2
      <Compile Include="Assets\Scripts\InputManager.cs" />
      <Compile Include="Assets\Scripts\LoopRoundMusic.cs" />
      <Compile Include="Assets\Scripts\Mainmenu.cs" />
