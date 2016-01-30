@@ -2,6 +2,8 @@
 
 public class InputManager : MonoBehaviour
 {
+    const float SENSITIVITY = 0.3f;
+
     public enum Side
     {
         None,
@@ -9,86 +11,94 @@ public class InputManager : MonoBehaviour
         Right
     }
     
-    Side _currentSide;
-    Side CurrentSide
+    Side _currentSideButton;
+    Side CurrentSideButton
 	{
-        get { return _currentSide; }
+        get { return _currentSideButton; }
         set 
         {
-            if (_currentSide == Side.None || value == Side.None)
-                _currentSide = value;
-            else if ((_currentSide == Side.Right && value == Side.Left) || (_currentSide == Side.Left && value == Side.Right))
+            if (_currentSideButton == Side.None || value == Side.None)
+                _currentSideButton = value;
+            else if ((_currentSideButton == Side.Right && value == Side.Left) || (_currentSideButton == Side.Left && value == Side.Right))
+            {
                 Debug.Log("DUE MANIII!! MUORIIII!!!11!!!11!");//Player.TwoHands()
+                _currentSideButton = value;
+            }
         }
     }
+    Side currentSidePosition;
+    Player player;
 
     void Start()
     {
-        CurrentSide = Side.None;
+        CurrentSideButton = Side.None;
+        currentSidePosition = Side.None;
+        player = GetComponent<Player>();
     }
 
     void Update()
     {
+        CheckPosition();
         CheckHand();
-        //Move();
+        Move();
         //Fire();
     }
 
     void CheckHand()
     {
         bool none = true;
-        Debug.Log(Input.GetAxis("HorizontalL1"));
-        if (Input.GetAxis("HorizontalL1") != 0 || Input.GetAxis("VerticalL1") != 0 || Input.GetAxis("DPadX") != 0 ||
-            Input.GetAxis("DPadY") != 0 || Input.GetAxis("TriggerL") != 0 || Input.GetKey(KeyCode.Joystick1Button4))
+
+        if (Input.GetAxis("HorizontalL1") > SENSITIVITY || Input.GetAxis("HorizontalL1") < -SENSITIVITY ||
+            Input.GetAxis("VerticalL1") > SENSITIVITY || Input.GetAxis("VerticalL1") < -SENSITIVITY ||
+            Input.GetAxis("DPadX") > SENSITIVITY || Input.GetAxis("DPadX") < -SENSITIVITY ||
+            Input.GetAxis("DPadY") > SENSITIVITY || Input.GetAxis("DPadY") < -SENSITIVITY ||
+            Input.GetAxis("TriggerL") != 0 || Input.GetKey(KeyCode.Joystick1Button4))
         {
-            CurrentSide = Side.Left;
+            CurrentSideButton = Side.Left;
             none = false;
         }
 
-        if (Input.GetAxis("HorizontalR1") > 0.8f || Input.GetAxis("HorizontalR1") < -0.8f || Input.GetAxis("VerticalR1") > 0.8f ||
-            Input.GetAxis("VerticalR1") < -0.8f || Input.GetAxis("TriggerR") != 0 || Input.GetKey(KeyCode.Joystick1Button0) ||
-            Input.GetKey(KeyCode.Joystick1Button1) || Input.GetKey(KeyCode.Joystick1Button2) || Input.GetKey(KeyCode.Joystick1Button3) ||
-            Input.GetKey(KeyCode.Joystick1Button5))
+        if (Input.GetAxis("HorizontalR1") > SENSITIVITY || Input.GetAxis("HorizontalR1") < -SENSITIVITY ||
+            Input.GetAxis("VerticalR1") > SENSITIVITY || Input.GetAxis("VerticalR1") < -SENSITIVITY ||
+            Input.GetAxis("TriggerR") != 0 || Input.GetKey(KeyCode.Joystick1Button0) || Input.GetKey(KeyCode.Joystick1Button1) ||
+            Input.GetKey(KeyCode.Joystick1Button2) || Input.GetKey(KeyCode.Joystick1Button3) ||Input.GetKey(KeyCode.Joystick1Button5))
             
         { 
-            CurrentSide = Side.Right;
+            CurrentSideButton = Side.Right;
             none = false;
         }
 
         if (none)
         {
-            CurrentSide = Side.None;
+            CurrentSideButton = Side.None;
         }
-
-        Debug.Log(CurrentSide);
     }
 
     void Move()
     {
         Vector3 direction = Vector3.zero;
-
-        switch (CurrentSide)
+        switch (CurrentSideButton)
         {
             case Side.None:
                 break;
 
             case Side.Left:
                 direction = new Vector3(Input.GetAxis("HorizontalL1"), 0, Input.GetAxis("VerticalL1"));
-                if(direction != Vector3.zero)
-                    ;//Player.Move(direction);
+                if (direction != Vector3.zero && currentSidePosition != Side.Right)
+                    player.move(direction);
                 break;
 
             case Side.Right:
                 direction = new Vector3(Input.GetAxis("HorizontalR1"), 0, Input.GetAxis("VerticalR1"));
-                if(direction != Vector3.zero)
-                    ;//Player.Move(direction);
+                if (direction != Vector3.zero && currentSidePosition != Side.Left)
+                    player.move(direction);
                 break;
         }
     }
 
     void Fire()
     {
-        switch (CurrentSide)
+        switch (CurrentSideButton)
         {
             case Side.None:
                 break;
@@ -103,5 +113,21 @@ public class InputManager : MonoBehaviour
                     ;//Player.Fire(CurrentSide);
                 break;
         }
+    }
+
+    void CheckPosition()
+    {
+        RaycastHit hitInfo = new RaycastHit();
+        int layerMask = 1 << 8;
+
+        if (Physics.Raycast(transform.position, transform.up, out hitInfo, 15, layerMask))
+        {
+            if (hitInfo.collider.tag == "Left")
+                currentSidePosition = Side.Left;
+            else if (hitInfo.collider.tag == "Right")
+                currentSidePosition = Side.Right;
+        }
+        else
+            currentSidePosition = Side.None;
     }
 }
