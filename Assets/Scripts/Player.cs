@@ -20,6 +20,10 @@ public class Player : MonoBehaviour {
 
 	public AudioClip antShoot;
 
+	public GameObject gameOverPlane;
+	public GameObject playAgainButton;
+	public GameObject menuButton;
+
     void Start ()
     {
         myRigidbody = GetComponent<Rigidbody>();
@@ -64,9 +68,26 @@ public class Player : MonoBehaviour {
         vita -= damage;
         if (vita <= 0)
         {
-            //Dieeee
+            // Dieeee => GAMEOVER
+			gameOver();
         }
         else
             health.ChangeHeartsNumber(vita);
     }
+
+	void gameOver() {
+		/*
+		// Load new scene
+		// make spiders idle and disable spawner
+		GetComponent<InputManager>().possibleSpiderCombos.ForEach(sc => sc.spider.movement = Spider.Movement.idle);
+
+		// show gameover plane and buttons
+		gameOverPlane.SetActive(true);
+		playAgainButton.SetActive (true);
+		menuButton.SetActive (true);
+
+		// Destroy player
+		Destroy (gameObject);
+		*/
+	}
 }

@@ -2,7 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class ButtonsManager {
+public class ButtonsManager : MonoBehaviour {
+
+	public GameObject redB;
+	public GameObject blueB;
+	public GameObject greenB;
+	public GameObject yellowB;
 
 	public enum Button {leftButton, rightButton, upButton, downButton, redButton, blueButton, yellowButton, greenButton};
 
@@ -41,5 +46,27 @@ public class ButtonsManager {
 				return Button.greenButton;
 			}
 		}
+	}
+
+	public GameObject getGameObjectFromButton(Button button) {
+		GameObject res;
+		switch (button) {
+		case Button.blueButton:
+			res = Instantiate (blueB);
+			break;
+		case Button.redButton:
+			res = Instantiate (redB);
+			break;
+		case Button.yellowButton:
+			res = Instantiate (yellowB);
+			break;
+		case Button.greenButton:
+			res = Instantiate (greenB);
+			break;
+		default:
+			res = Instantiate (blueB);
+			break;
+		}
+		return res;
 	}
 }

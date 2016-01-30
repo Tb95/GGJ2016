@@ -16,6 +16,7 @@ public class BulletCollision : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {
 		if (other.gameObject.tag == "Spider") {
 			other.gameObject.GetComponent<Spider> ().Hit (1);
+			Destroy (gameObject);
 		}
 	}
 }

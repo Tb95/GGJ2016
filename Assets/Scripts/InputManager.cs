@@ -231,6 +231,11 @@ public class InputManager : MonoBehaviour
 			if (buttonTimeSequence.isSequenceOK(possibleSpiderCombos[i], 3.0f)) {
 				// SPIDER EXPLOSION!!!
 				Debug.Log("Tango down!");
+				// Togli la combo
+				var children = new List<GameObject>();
+				foreach (Transform child in possibleSpiderCombos [i].spider.comboText.transform) children.Add(child.gameObject);
+				children.ForEach(child => Destroy(child));
+				possibleSpiderCombos [i].spider.comboText.SetActive (false);
 				Destroy (possibleSpiderCombos [i].spider.gameObject);
 				possibleSpiderCombos.Remove (possibleSpiderCombos [i]);
 				buttonTimeSequence.resetSequence();

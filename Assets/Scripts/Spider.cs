@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class Spider : MonoBehaviour {
 
-	public enum Movement {chase, chaseZigZag, chaseArchs};
+	public enum Movement {idle, chase, chaseZigZag, chaseArchs};
 
 	public Movement movement = Movement.chase;
 	// BASIC
@@ -33,49 +34,71 @@ public class Spider : MonoBehaviour {
 	public AudioClip flippinSpider;
 	public AudioClip spiderCatch;
 	public AudioClip spiderKill;
+	public AudioClip spiderFall;
 	// BAD THINGS
 	SpiderCombo spiderCombo;
+	public GameObject comboText;
+	GameObject spiderTrail;
+	GameObject trail;
 
 	// Use this for initialization
 	void Start () {
+		GameObject spiderSpawner = GameObject.Find ("SpiderSpawner");
+		comboText = spiderSpawner.GetComponent<SpawnGameObjects> ().comboText;
+		spiderTrail = spiderSpawner.GetComponent<SpawnGameObjects> ().spiderTrail;
 		player = GameObject.FindGameObjectWithTag ("Player");
 		side = player.GetComponent<InputManager> ().getRandomSide ();
-		buttonsManager = new ButtonsManager ();
+		buttonsManager = GameObject.FindGameObjectWithTag ("ButtonsManager").GetComponent<ButtonsManager>();
 		comboList = buttonsManager.getRandomCombo(comboLength, side);
 		spiderCombo = new SpiderCombo (comboList, this);
 		player.GetComponent<InputManager> ().possibleSpiderCombos.Add(spiderCombo);
+
+		// Play fall sound
+		gameObject.GetComponent<AudioSource>().clip = spiderFall;
+		gameObject.GetComponent<AudioSource> ().Play ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if (!isDown) {
-			float dist = Vector3.Distance (transform.position, player.transform.position);
-			// If dist < 0.3 : do nothing
-			// If 0.3 < dist < 2 : just chase
-			// If 2 < dist : perform movement
-			if (dist >= doNothingTriggerDistance && dist <= chaseTriggerDistance) {
-				chase (player);
-			} else if (dist > chaseTriggerDistance) {
-				if (movement == Movement.chase)
+			if (movement != Movement.idle) {
+				float dist = Vector3.Distance (transform.position, player.transform.position);
+				// If dist < 0.3 : do nothing
+				// If 0.3 < dist < 2 : just chase
+				// If 2 < dist : perform movement
+				if (dist >= doNothingTriggerDistance && dist <= chaseTriggerDistance) {
 					chase (player);
-				else if (movement == Movement.chaseZigZag)
-					chaseZigZag (player);
-				else if (movement == Movement.chaseArchs)
-					chaseArchs (player);
+				} else if (dist > chaseTriggerDistance) {
+					if (movement == Movement.chase)
+						chase (player);
+					else if (movement == Movement.chaseZigZag)
+						chaseZigZag (player);
+					else if (movement == Movement.chaseArchs)
+						chaseArchs (player);
+				}
 			}
 		}
 
 		// MANAGE IS DOWN
 		else {
 			// 1 - Mostra combo
-			// 2 - Dopo tot tempo torna not down
 
-			// 2
+
+			// 2 - Dopo tot tempo torna girato giusto
 			if ((Time.time - timeOfGettingDown) >= downTime) {
 				isDown = false;
 
+				// Togli la combo
+				var children = new List<GameObject>();
+				foreach (Transform child in comboText.transform) children.Add(child.gameObject);
+				children.ForEach(child => Destroy(child));
+				comboText.SetActive (false);
+
 				// Rotate by 180 degrees
 				gameObject.transform.RotateAround(gameObject.transform.forward, 180.0f);
+
+				// Delete trail
+				Destroy(trail);
 
 				// Reenable trigger that causes the player to lose health
 				gameObject.GetComponent<CapsuleCollider>().enabled = true;
@@ -167,8 +190,29 @@ public class Spider : MonoBehaviour {
 			timeOfGettingDown = Time.time;
 			Debug.Log (comboList [0] + "");
 
+			// Create trail renderer
+			trail = Instantiate(spiderTrail);
+			trail.transform.position = transform.position + transform.right * 2.0f;
+			trail.GetComponent<RotateAround> ().target = gameObject.transform;
+			trail.GetComponent<RotateAround> ().vec = gameObject.transform.up;
+			trail.SetActive (true);
+
 			// Rotate by 180 degrees
 			gameObject.transform.RotateAround(gameObject.transform.forward, 180.0f);
+
+			// Show combo label
+			comboText.SetActive (true);
+			List<GameObject> buts = new List<GameObject>();
+			int distanceBetweenButtons = 50;
+			for (int i = 0; i < spiderCombo.buttonsList.Count; i++) {
+				ButtonsManager.Button b = spiderCombo.buttonsList[i];
+				buts.Add(buttonsManager.getGameObjectFromButton(b));
+			}
+			for (int i = 0; i < buts.Count; i++) {
+				buts[i].transform.parent = comboText.transform;
+				buts[i].transform.position = comboText.transform.position - comboText.transform.up * (i + 1) * distanceBetweenButtons;
+				buts[i].SetActive(true);
+			}
 
 			// Play sound
 			gameObject.GetComponent<AudioSource>().clip = flippinSpider;
