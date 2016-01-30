@@ -263,7 +263,7 @@ public class InputManager : MonoBehaviour
 		for (int i = 0; i < possibleSpiderCombos.Count; i++) {
 			if (buttonTimeSequence.isSequenceOK(possibleSpiderCombos[i], 3.0f)) {
 				// SPIDER EXPLOSION!!!
-				Debug.Log("Tango down!");
+                possibleSpiderCombos[i].spider.GetSpawner().DeadEnemy();
 				Destroy (possibleSpiderCombos [i].spider.gameObject);
                 GetComponent<Health>().DeadEnemy(true);
 				possibleSpiderCombos.Remove (possibleSpiderCombos [i]);

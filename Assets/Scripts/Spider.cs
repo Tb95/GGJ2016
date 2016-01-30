@@ -22,6 +22,7 @@ public class Spider : MonoBehaviour {
 	public int minArchLength = 3;
 	public int maxArchLength = 7;
 	public int archProbability = 40;
+    [HideInInspector]
 	public GameObject player;
 	// COMBO
 	public int comboLength = 3;
@@ -35,6 +36,10 @@ public class Spider : MonoBehaviour {
 	public AudioClip spiderKill;
 	// BAD THINGS
 	SpiderCombo spiderCombo;
+    // ANIMATOR
+    Animator animator;
+    //SPAWNER
+    SpawnGameObjects spawner;
 
 	// Use this for initialization
 	void Start () {
@@ -46,43 +51,54 @@ public class Spider : MonoBehaviour {
 		comboList = buttonsManager.getRandomCombo(comboLength, side);
 		spiderCombo = new SpiderCombo (comboList, this);
 		player.GetComponent<InputManager> ().possibleSpiderCombos.Add(spiderCombo);
+
+        animator = GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (!isDown) {
-			float dist = Vector3.Distance (transform.position, player.transform.position);
-			// If dist < 0.3 : do nothing
-			// If 0.3 < dist < 2 : just chase
-			// If 2 < dist : perform movement
-			if (dist >= doNothingTriggerDistance && dist <= chaseTriggerDistance) {
-				chase (player);
-			} else if (dist > chaseTriggerDistance) {
-				if (movement == Movement.chase)
-					chase (player);
-				else if (movement == Movement.chaseZigZag)
-					chaseZigZag (player);
-				else if (movement == Movement.chaseArchs)
-					chaseArchs (player);
-			}
-		}
+            if (!isDown)
+            {
+                if (animator.GetCurrentAnimatorStateInfo(0).IsName("Walk"))
+                {
+                    float dist = Vector3.Distance(transform.position, player.transform.position);
+                    // If dist < 0.3 : do nothing
+                    // If 0.3 < dist < 2 : just chase
+                    // If 2 < dist : perform movement
+                    if (dist >= doNothingTriggerDistance && dist <= chaseTriggerDistance)
+                    {
+                        chase(player);
+                    }
+                    else if (dist > chaseTriggerDistance)
+                    {
+                        if (movement == Movement.chase)
+                            chase(player);
+                        else if (movement == Movement.chaseZigZag)
+                            chaseZigZag(player);
+                        else if (movement == Movement.chaseArchs)
+                            chaseArchs(player);
+                    }
+                }
+            }
 
-		// MANAGE IS DOWN
-		else {
-			// 1 - Mostra combo
-			// 2 - Dopo tot tempo torna not down
+            // MANAGE IS DOWN
+            else
+            {
+                // 1 - Mostra combo
+                // 2 - Dopo tot tempo torna not down
+                // 2
+                if ((Time.time - timeOfGettingDown) >= downTime)
+                {
+                    isDown = false;
 
-			// 2
-			if ((Time.time - timeOfGettingDown) >= downTime) {
-				isDown = false;
+                    // Reenable trigger that causes the player to lose health
+                    gameObject.GetComponent<CapsuleCollider>().enabled = true;
 
-				// Rotate by 180 degrees
-				gameObject.transform.RotateAround(gameObject.transform.forward, 180.0f);
-
-				// Reenable trigger that causes the player to lose health
-				gameObject.GetComponent<CapsuleCollider>().enabled = true;
-			}
-		}
+                    //Animate turn
+                    Debug.Log("turn");
+                    animator.SetTrigger("Turn");
+                }
+            }
 	}
 
 	void chase(GameObject player) {
@@ -134,14 +150,14 @@ public class Spider : MonoBehaviour {
 
 	float lastAttackTime = 0;
 	public float attackEveryTotSeconds = 0.5f;
-	void OnTriggerEnter(Collider other) {
+	void OnCollisionEnter(Collision other) {
 		if (other.gameObject.tag == "Player" && (Time.time - lastAttackTime) > attackEveryTotSeconds) {
 			other.gameObject.GetComponent<Player> ().Hit (1);
 			lastAttackTime = Time.time;
 		}
 	}
 
-	void OnTriggerStay(Collider other) {
+	void OnCollisionStay(Collision other) {
 		if (other.gameObject.tag == "Player" && (Time.time - lastAttackTime) > attackEveryTotSeconds) {
 			other.gameObject.GetComponent<Player> ().Hit (1);
 
@@ -164,14 +180,11 @@ public class Spider : MonoBehaviour {
 			player.GetComponent<AudioSource> ().Play ();
 
             playerThatHit.GetComponent<Health>().DeadEnemy(false);
+            spawner.DeadEnemy();
 			Destroy (gameObject);
 		} else {
 			isDown = true;
 			timeOfGettingDown = Time.time;
-			Debug.Log (comboList [0] + "");
-
-			// Rotate by 180 degrees
-			gameObject.transform.RotateAround(gameObject.transform.forward, 180.0f);
 
 			// Play sound
 			gameObject.GetComponent<AudioSource>().clip = flippinSpider;
@@ -179,6 +192,22 @@ public class Spider : MonoBehaviour {
 
 			// Deactivate trigger that cause the player to lose health
 			gameObject.GetComponent<CapsuleCollider>().enabled = false;
+
+            //Animate turn
+            animator.SetTrigger("Turn");
+
+            //Attack who hit you
+            player = playerThatHit;
 		}
 	}
+
+    public void SetSpawner(SpawnGameObjects spawner)
+    {
+        this.spawner = spawner;
+    }
+
+    public SpawnGameObjects GetSpawner()
+    {
+        return spawner;
+    }
 }
