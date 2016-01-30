@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class Mainmenu : MonoBehaviour {
@@ -71,12 +72,12 @@ public class Mainmenu : MonoBehaviour {
 
     public void playerone () 
     {
-        Application.LoadLevel (1);
+        SceneManager.LoadScene(1);
     }
 
-    public void playertwo () 
+    public void playertwo ()
     {
-        Application.LoadLevel (2);
+        SceneManager.LoadScene(2);
     }
 
 
