@@ -1,28 +1,42 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Player : MonoBehaviour {
 
     public int vita;
     public int danno;
     public int velocità;
     public int velocitàAttacco;
-    public int raggio;
+    public float raggio;
+    [Range(0, 2)]
+    public float rotationSpeed;
+    public GameObject bulletPrefab;
+
+    Rigidbody myRigidbody;
+    float nextAvailableTimeForAttack;
+
+    void Start ()
+    {
+        myRigidbody = GetComponent<Rigidbody>();
+        nextAvailableTimeForAttack = Time.realtimeSinceStartup;
+    }
 
     public void move (Vector3 movimento)
     {
+        Quaternion rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movimento), rotationSpeed);
+
         movimento = movimento.normalized;
         movimento = movimento * velocità * Time.deltaTime;
-        transform.position = transform.position + movimento;
+        myRigidbody.MovePosition(transform.position + movimento);
+
+        myRigidbody.MoveRotation(rotation);
     }
 
-    public void attack()
+    public void attack(InputManager.Side side)
     {
-        GameObject fireball = GameObject.FindWithTag("FireBall");
-        fireball.SetActive(true);
-        fireball.transform.position = fireball.transform.position + new Vector3(0, velocitàAttacco * Time.deltaTime, 0);
-        Destroy(fireball, 0.5f);
-        Instantiate(fireball);
-        fireball.SetActive(false);
+        GameObject bullet = Instantiate(bulletPrefab, transform.position + transform.forward * 2, transform.rotation) as GameObject;
+        bullet.GetComponent<Rigidbody>().velocity = transform.forward * velocitàAttacco;
+        Destroy(bullet, raggio / velocitàAttacco);
     }
 }
