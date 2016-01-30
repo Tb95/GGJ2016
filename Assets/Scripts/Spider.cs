@@ -16,6 +16,7 @@ public class Spider : MonoBehaviour {
 	// ARCHS
 	public int minArchLength = 3;
 	public int maxArchLength = 7;
+	public int archProbability = 40;
 	GameObject player;
 
 	// Use this for initialization
@@ -70,7 +71,7 @@ public class Spider : MonoBehaviour {
 	int directionForChaseWandering = 0;
 
 	void chaseArchs(GameObject player) {
-		if ((deltaXForChaseWandering <= 0.3) && (Random.Range (0, 60) == 0)) {
+		if ((deltaXForChaseWandering <= 0.3) && (Random.Range (0, 100 - archProbability) == 0)) {
 			deltaXForChaseWandering = (float)(Random.Range (minArchLength, maxArchLength + 1));
 			directionForChaseWandering = Random.Range (0, 2);
 		}
