@@ -10,6 +10,9 @@ public class SpawnGameObjects : MonoBehaviour {
 	public float deltaX = 0.0f;
 	public float deltaZ = 0.0f;
     public int maxEnemies;
+
+	public GameObject comboText;
+	public GameObject spiderTrail;
 	
 	private float savedTime;
 	private float secondsBetweenSpawning;

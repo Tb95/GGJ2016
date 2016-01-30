@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/3dmax/Materials/Ragno_DIFFUSE.mat.meta
 guid: 744dca9c415ad364dba39f1beedead36
 timeCreated: 1454180516
+=======
+guid: 8b35b26bb4fa44b9d9fa650c6bc0a972
+timeCreated: 1454184682
+>>>>>>> 0deb0573c68c6223a9ca841a80a94d376818bd1c:Assets/Prefabs/Spider.prefab.meta
 licenseType: Free
 NativeFormatImporter:
   userData: 

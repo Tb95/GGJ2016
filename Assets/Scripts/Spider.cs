@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class Spider : MonoBehaviour {
 
-	public enum Movement {chase, chaseZigZag, chaseArchs};
+	public enum Movement {idle, chase, chaseZigZag, chaseArchs};
 
 	public Movement movement = Movement.chase;
 	// BASIC
@@ -34,25 +35,36 @@ public class Spider : MonoBehaviour {
 	public AudioClip flippinSpider;
 	public AudioClip spiderCatch;
 	public AudioClip spiderKill;
+	public AudioClip spiderFall;
 	// BAD THINGS
 	SpiderCombo spiderCombo;
     // ANIMATOR
     Animator animator;
     //SPAWNER
     SpawnGameObjects spawner;
+	public GameObject comboText;
+	GameObject spiderTrail;
+	GameObject trail;
 
 	// Use this for initialization
 	void Start () {
+		comboText = spawner.comboText;
+		spiderTrail = spawner.spiderTrail;
+		
 		var players = GameObject.FindGameObjectsWithTag("Player");
         player = players[Random.Range(0, players.Length)];
 
 		side = player.GetComponent<InputManager> ().getRandomSide ();
-		buttonsManager = new ButtonsManager ();
+		buttonsManager = GameObject.FindGameObjectWithTag ("ButtonsManager").GetComponent<ButtonsManager>();
 		comboList = buttonsManager.getRandomCombo(comboLength, side);
 		spiderCombo = new SpiderCombo (comboList, this);
 		player.GetComponent<InputManager> ().possibleSpiderCombos.Add(spiderCombo);
 
         animator = GetComponent<Animator>();
+
+		// Play fall sound
+		gameObject.GetComponent<AudioSource>().clip = spiderFall;
+		gameObject.GetComponent<AudioSource> ().Play ();
 	}
 	
 	// Update is called once per frame
@@ -185,6 +197,27 @@ public class Spider : MonoBehaviour {
 		} else {
 			isDown = true;
 			timeOfGettingDown = Time.time;
+
+			// Create trail renderer
+			trail = Instantiate(spiderTrail);
+			trail.transform.position = transform.position + transform.right * 2.0f;
+			trail.GetComponent<RotateAround> ().target = gameObject.transform;
+			trail.GetComponent<RotateAround> ().vec = gameObject.transform.up;
+			trail.SetActive (true);
+
+			// Show combo label
+			comboText.SetActive (true);
+			List<GameObject> buts = new List<GameObject>();
+			int distanceBetweenButtons = 50;
+			for (int i = 0; i < spiderCombo.buttonsList.Count; i++) {
+				ButtonsManager.Button b = spiderCombo.buttonsList[i];
+				buts.Add(buttonsManager.getGameObjectFromButton(b));
+			}
+			for (int i = 0; i < buts.Count; i++) {
+				buts[i].transform.parent = comboText.transform;
+				buts[i].transform.position = comboText.transform.position - comboText.transform.up * (i + 1) * distanceBetweenButtons;
+				buts[i].SetActive(true);
+			}
 
 			// Play sound
 			gameObject.GetComponent<AudioSource>().clip = flippinSpider;
