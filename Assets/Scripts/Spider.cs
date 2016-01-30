@@ -18,11 +18,11 @@ public class Spider : MonoBehaviour {
 	void Update () {
 		float dist = Vector3.Distance (transform.position, player.transform.position);
 		// If dist < 0.3 : do nothing
-		// If 0.3 < dist < 0.5 : just chase
-		// If 0.5 < dist : perform movement
-		if (dist >= 0.3 && dist <= 0.5) {
+		// If 0.3 < dist < 2 : just chase
+		// If 2 < dist : perform movement
+		if (dist >= 0.3 && dist <= 2) {
 			chase (player);
-		} else if (dist > 0.5) {
+		} else if (dist > 2) {
 			if (movement == Movement.chase)
 				chase (player);
 			else if (movement == Movement.chaseZigZag)
@@ -53,7 +53,7 @@ public class Spider : MonoBehaviour {
 			tempDeltaX = (-speed) * Time.deltaTime;
 		}
 		deltaXForChaseZigZag -= tempDeltaX;
-		transform.position += ((player.transform.position - transform.position).normalized + (player.transform.right * tempDeltaX).normalized).normalized * speed * Time.deltaTime;
+		transform.position += ((player.transform.position - transform.position).normalized + (transform.right * tempDeltaX).normalized).normalized * speed * Time.deltaTime;
 		transform.LookAt (player.transform.position);
 	}
 
@@ -61,7 +61,7 @@ public class Spider : MonoBehaviour {
 	int directionForChaseWandering = 0;
 
 	void chaseWandering(GameObject player) {
-		if ((deltaXForChaseWandering <= 0.3) && (Random.Range (0, 80) == 0)) {
+		if ((deltaXForChaseWandering <= 0.3) && (Random.Range (0, 60) == 0)) {
 			deltaXForChaseWandering = (float)(Random.Range (3, 7));
 			directionForChaseWandering = Random.Range (0, 2);
 		}
