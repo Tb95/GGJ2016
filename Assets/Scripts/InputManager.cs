@@ -13,6 +13,8 @@ public class InputManager : MonoBehaviour
         Right
     }
     public float twoHandsCooldown;
+    [Range(1, 4)]
+    public int playerNumber;
     
     Side _currentSideButton;
     Side CurrentSideButton
@@ -37,6 +39,7 @@ public class InputManager : MonoBehaviour
     bool isPause;
     Openpause pause;
     float nextTwoHands;
+    KeyCode[] buttons;
 
     void Start()
     {
@@ -46,6 +49,30 @@ public class InputManager : MonoBehaviour
         isPause = false;
         pause = GetComponent<Openpause>();
         nextTwoHands = Time.realtimeSinceStartup;
+
+        buttons = new KeyCode[8];
+        if (playerNumber == 1)
+        {
+            buttons[0] = KeyCode.Joystick1Button0;
+            buttons[1] = KeyCode.Joystick1Button1;
+            buttons[2] = KeyCode.Joystick1Button2;
+            buttons[3] = KeyCode.Joystick1Button3;
+            buttons[4] = KeyCode.Joystick1Button4;
+            buttons[5] = KeyCode.Joystick1Button5;
+            buttons[6] = KeyCode.Joystick1Button6;
+            buttons[7] = KeyCode.Joystick1Button7;
+        }
+        else if (playerNumber == 2)
+        {
+            buttons[0] = KeyCode.Joystick4Button0;
+            buttons[1] = KeyCode.Joystick4Button1;
+            buttons[2] = KeyCode.Joystick4Button2;
+            buttons[3] = KeyCode.Joystick4Button3;
+            buttons[4] = KeyCode.Joystick4Button4;
+            buttons[5] = KeyCode.Joystick4Button5;
+            buttons[6] = KeyCode.Joystick4Button6;
+            buttons[7] = KeyCode.Joystick4Button7;
+        }
     }
 
     void Update()
@@ -63,20 +90,20 @@ public class InputManager : MonoBehaviour
     {
         bool none = true;
 
-        if (Input.GetAxis("HorizontalL1") > SENSITIVITY || Input.GetAxis("HorizontalL1") < -SENSITIVITY ||
-            Input.GetAxis("VerticalL1") > SENSITIVITY || Input.GetAxis("VerticalL1") < -SENSITIVITY ||
-            Input.GetAxis("DPadX") > SENSITIVITY || Input.GetAxis("DPadX") < -SENSITIVITY ||
-            Input.GetAxis("DPadY") > SENSITIVITY || Input.GetAxis("DPadY") < -SENSITIVITY ||
-            Input.GetAxis("TriggerL") != 0 || Input.GetKey(KeyCode.Joystick1Button4))
+        if (Input.GetAxis("HorizontalL" + playerNumber) > SENSITIVITY || Input.GetAxis("HorizontalL" + playerNumber) < -SENSITIVITY ||
+            Input.GetAxis("VerticalL" + playerNumber) > SENSITIVITY || Input.GetAxis("VerticalL" + playerNumber) < -SENSITIVITY ||
+            Input.GetAxis("DPadX" + playerNumber) > SENSITIVITY || Input.GetAxis("DPadX" + playerNumber) < -SENSITIVITY ||
+            Input.GetAxis("DPadY" + playerNumber) > SENSITIVITY || Input.GetAxis("DPadY" + playerNumber) < -SENSITIVITY ||
+            Input.GetAxis("TriggerL" + playerNumber) != 0 || Input.GetKey(buttons[4]))
         {
             CurrentSideButton = Side.Left;
             none = false;
         }
 
-        if (Input.GetAxis("HorizontalR1") > SENSITIVITY || Input.GetAxis("HorizontalR1") < -SENSITIVITY ||
-            Input.GetAxis("VerticalR1") > SENSITIVITY || Input.GetAxis("VerticalR1") < -SENSITIVITY ||
-            Input.GetAxis("TriggerR") != 0 || Input.GetKey(KeyCode.Joystick1Button0) || Input.GetKey(KeyCode.Joystick1Button1) ||
-            Input.GetKey(KeyCode.Joystick1Button2) || Input.GetKey(KeyCode.Joystick1Button3) ||Input.GetKey(KeyCode.Joystick1Button5))
+        if (Input.GetAxis("HorizontalR" + playerNumber) > SENSITIVITY || Input.GetAxis("HorizontalR" + playerNumber) < -SENSITIVITY ||
+            Input.GetAxis("VerticalR" + playerNumber) > SENSITIVITY || Input.GetAxis("VerticalR" + playerNumber) < -SENSITIVITY ||
+            Input.GetAxis("TriggerR" + playerNumber) != 0 || Input.GetKey(buttons[0]) || Input.GetKey(buttons[1]) ||
+            Input.GetKey(buttons[2]) || Input.GetKey(buttons[3]) || Input.GetKey(buttons[5]))
             
         { 
             CurrentSideButton = Side.Right;
@@ -98,13 +125,13 @@ public class InputManager : MonoBehaviour
                 break;
 
             case Side.Left:
-                direction = new Vector3(Input.GetAxis("HorizontalL1"), 0, Input.GetAxis("VerticalL1"));
+                direction = new Vector3(Input.GetAxis("HorizontalL" + playerNumber), 0, Input.GetAxis("VerticalL" + playerNumber));
                 if (direction.magnitude > SENSITIVITY && currentSidePosition != Side.Right)
                     player.move(direction);
                 break;
 
             case Side.Right:
-                direction = new Vector3(Input.GetAxis("HorizontalR1"), 0, Input.GetAxis("VerticalR1"));
+                direction = new Vector3(Input.GetAxis("HorizontalR" + playerNumber), 0, Input.GetAxis("VerticalR" + playerNumber));
                 if (direction.magnitude > SENSITIVITY  && currentSidePosition != Side.Left)
                     player.move(direction);
                 break;
@@ -119,12 +146,12 @@ public class InputManager : MonoBehaviour
                 break;
 
             case Side.Left:
-                if (currentSidePosition == Side.Left && Input.GetAxis("TriggerL") > SENSITIVITY)
+                if (currentSidePosition == Side.Left && Input.GetAxis("TriggerL" + playerNumber) > SENSITIVITY)
                     player.attack(CurrentSideButton);
                 break;
 
             case Side.Right:
-                if (currentSidePosition == Side.Right && Input.GetAxis("TriggerR") > SENSITIVITY)
+                if (currentSidePosition == Side.Right && Input.GetAxis("TriggerR" + playerNumber) > SENSITIVITY)
                     player.attack(CurrentSideButton);
                 break;
         }
@@ -137,9 +164,9 @@ public class InputManager : MonoBehaviour
 
         if (Physics.Raycast(transform.position, transform.up, out hitInfo, 15, layerMask))
         {
-            if (hitInfo.collider.tag == "Left")
+            if (hitInfo.collider.tag == "Left1")
                 currentSidePosition = Side.Left;
-            else if (hitInfo.collider.tag == "Right")
+            else if (hitInfo.collider.tag == "Right1")
                 currentSidePosition = Side.Right;
         }
         else
@@ -148,7 +175,7 @@ public class InputManager : MonoBehaviour
 
     void CheckPause()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Joystick1Button7))
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(buttons[7]))
         {
             if(isPause)
             {
@@ -192,28 +219,34 @@ public class InputManager : MonoBehaviour
 		} else if (Input.GetButtonDown ("joystick button 3") && currentSidePosition == Side.Left) {
 			Debug.Log ("Button 3");
 		}*/
-		if (Input.GetButtonDown("yellow")) {
+		if (Input.GetKeyDown(KeyCode.Z) && Input.GetKeyDown(buttons[3])) {
 			Debug.Log("yellow");
 
 			ButtonTimeSequence.ButtonTime buttonTime;
 			buttonTime.button = ButtonsManager.Button.yellowButton;
 			buttonTime.timeFromStart = Time.time;
 			buttonTimeSequence.prepend(buttonTime);
-		} else if (Input.GetButtonDown("red")) {
+        }
+        else if (Input.GetKeyDown(KeyCode.X) && Input.GetKeyDown(buttons[1]))
+        {
 			Debug.Log("red");
 
 			ButtonTimeSequence.ButtonTime buttonTime;
 			buttonTime.button = ButtonsManager.Button.redButton;
 			buttonTime.timeFromStart = Time.time;
 			buttonTimeSequence.prepend(buttonTime);
-		} else if (Input.GetButtonDown("green")) {
+        }
+        else if (Input.GetKeyDown(KeyCode.C) && Input.GetKeyDown(buttons[0]))
+        {
 			Debug.Log("green");
 
 			ButtonTimeSequence.ButtonTime buttonTime;
 			buttonTime.button = ButtonsManager.Button.greenButton;
 			buttonTime.timeFromStart = Time.time;
 			buttonTimeSequence.prepend(buttonTime);
-		} else if (Input.GetButtonDown("blue")) {
+        }
+        else if (Input.GetKeyDown(KeyCode.V) && Input.GetKeyDown(buttons[2]))
+        {
 			Debug.Log("blue");
 
 			ButtonTimeSequence.ButtonTime buttonTime;
@@ -237,6 +270,7 @@ public class InputManager : MonoBehaviour
 				children.ForEach(child => Destroy(child));
 				possibleSpiderCombos [i].spider.comboText.SetActive (false);
 				Destroy (possibleSpiderCombos [i].spider.gameObject);
+                GetComponent<Health>().DeadEnemy(true);
 				possibleSpiderCombos.Remove (possibleSpiderCombos [i]);
 				buttonTimeSequence.resetSequence();
 			}

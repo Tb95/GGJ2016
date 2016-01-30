@@ -4,6 +4,8 @@ using System.Collections;
 public class CameraFollow : MonoBehaviour {
 
     public Transform target;
+    public int minFOV;
+    public int maxFOV;
 
     Camera myCamera;
     int speed;
@@ -31,20 +33,29 @@ public class CameraFollow : MonoBehaviour {
         cameraCollisionSideY = CameraCollisionSideY.None;
         myRigidbody = GetComponent<Rigidbody>();
     }
-	
-	void Update () {
-        Vector3 screenPosition = myCamera.WorldToScreenPoint(target.position);
+
+    void Update()
+    {
+        var players = GameObject.FindGameObjectsWithTag("Player");
+        Vector3 centreOfMass = Vector3.zero;
+        for (int i = 0; i < players.Length; i++)
+        {
+            centreOfMass += players[i].transform.position;
+        }
+        centreOfMass /= players.Length;
+
+        Vector3 screenPosition = myCamera.WorldToScreenPoint(centreOfMass);
         Vector3 moveTo = new Vector3(transform.position.x, transform.position.y, transform.position.z);
 
-        if(cameraCollisionSideX == CameraCollisionSideX.None)
+        if (cameraCollisionSideX == CameraCollisionSideX.None)
         {
             if (screenPosition.x > Screen.width * 0.52f)
                 cameraCollisionSideX = CameraCollisionSideX.Right;
             else if (screenPosition.x < Screen.width * 0.48f)
                 cameraCollisionSideX = CameraCollisionSideX.Left;
             else
-                moveTo.x = target.position.x;
-        }            
+                moveTo.x = centreOfMass.x;
+        }
         else
         {
             if (cameraCollisionSideX == CameraCollisionSideX.Right && screenPosition.x < Screen.width * 0.5f)
@@ -60,7 +71,7 @@ public class CameraFollow : MonoBehaviour {
             else if (screenPosition.y < Screen.height * 0.48f)
                 cameraCollisionSideY = CameraCollisionSideY.Down;
             else
-                moveTo.z = target.position.z;
+                moveTo.z = centreOfMass.z;
         }
         else
         {

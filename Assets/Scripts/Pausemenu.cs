@@ -108,10 +108,10 @@ public class Pausemenu : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Joystick1Button0) && ButtonOn is Button)
             (ButtonOn as Button).onClick.Invoke();
 
-        if (Mathf.Abs(Input.GetAxis("DPadX")) > 0.5f && ButtonOn is Slider)
-            (ButtonOn as Slider).value += Input.GetAxis("DPadX") * 0.5f;
+        if (Mathf.Abs(Input.GetAxis("DPadX1")) > 0.5f && ButtonOn is Slider)
+            (ButtonOn as Slider).value += Input.GetAxis("DPadX1") * 0.5f;
 
-        if (!dPadPressed && Input.GetAxis("DPadY") < -0.5f)
+        if (!dPadPressed && Input.GetAxis("DPadY1") < -0.5f)
         {
             dPadPressed = true;
             currentButtonIndex++;
@@ -119,7 +119,7 @@ public class Pausemenu : MonoBehaviour {
                 currentButtonIndex = 0;
             ButtonOn = buttons[currentButtonIndex];
         }
-        else if (!dPadPressed && Input.GetAxis("DPadY") > 0.5f)
+        else if (!dPadPressed && Input.GetAxis("DPadY1") > 0.5f)
         {
             dPadPressed = true;
             currentButtonIndex--;
@@ -127,7 +127,7 @@ public class Pausemenu : MonoBehaviour {
                 currentButtonIndex = buttons.Count - 1;
             ButtonOn = buttons[currentButtonIndex];
         }
-        else if (Mathf.Abs(Input.GetAxis("DPadY")) < 0.3f)
+        else if (Mathf.Abs(Input.GetAxis("DPadY1")) < 0.3f)
             dPadPressed = false;
     }
 }

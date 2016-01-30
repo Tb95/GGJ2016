@@ -43,10 +43,16 @@ public class Spider : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+<<<<<<< HEAD
 		GameObject spiderSpawner = GameObject.Find ("SpiderSpawner");
 		comboText = spiderSpawner.GetComponent<SpawnGameObjects> ().comboText;
 		spiderTrail = spiderSpawner.GetComponent<SpawnGameObjects> ().spiderTrail;
 		player = GameObject.FindGameObjectWithTag ("Player");
+=======
+		var players = GameObject.FindGameObjectsWithTag("Player");
+        player = players[Random.Range(0, players.Length)];
+
+>>>>>>> d360d0edc6b4165b4b8a9417eb25c80b495019af
 		side = player.GetComponent<InputManager> ().getRandomSide ();
 		buttonsManager = GameObject.FindGameObjectWithTag ("ButtonsManager").GetComponent<ButtonsManager>();
 		comboList = buttonsManager.getRandomCombo(comboLength, side);
@@ -175,7 +181,7 @@ public class Spider : MonoBehaviour {
 	}
 
 	float timeOfGettingDown = 0;
-	public void Hit(int damage) {
+	public void Hit(int damage, GameObject playerThatHit) {
 		health -= damage;
 		if (health <= 0) {
 			player.GetComponent<InputManager> ().possibleSpiderCombos.Remove (spiderCombo);
@@ -184,6 +190,7 @@ public class Spider : MonoBehaviour {
 			player.GetComponent<AudioSource>().clip = spiderKill;
 			player.GetComponent<AudioSource> ().Play ();
 
+            playerThatHit.GetComponent<Health>().DeadEnemy(false);
 			Destroy (gameObject);
 		} else {
 			isDown = true;
