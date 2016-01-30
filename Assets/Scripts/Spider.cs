@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Spider : MonoBehaviour {
 
@@ -10,6 +11,7 @@ public class Spider : MonoBehaviour {
 	public int speed = 4;
 	public float doNothingTriggerDistance = 0.3f;
 	public float chaseTriggerDistance = 2.0f;
+	public bool isDown = false;
 	// ZIG ZAG
 	public int minZigZagLength = 3;
 	public int maxZigZagLength = 7;
@@ -17,11 +19,23 @@ public class Spider : MonoBehaviour {
 	public int minArchLength = 3;
 	public int maxArchLength = 7;
 	public int archProbability = 40;
-	GameObject player;
+	public GameObject player;
+	// COMBO
+	public int comboLength = 3;
+	ButtonsManager buttonsManager;
+	public List<ButtonsManager.Button> comboList;
+	// RADIUS FOR ATTACK
+	public float radiusForAttack = 4.0f;
 
 	// Use this for initialization
 	void Start () {
 		player = GameObject.FindGameObjectWithTag ("Player");
+		buttonsManager = new ButtonsManager ();
+		comboList = buttonsManager.getRandomCombo(comboLength, player.GetComponent<InputManager>().getRandomSide());
+		player.GetComponent<InputManager> ().possibleSpiderCombos.Add(new SpiderCombo(comboList, this));
+		for (int i = 0; i < comboList.Count; i++) {
+			Debug.Log (comboList [i]);
+		}
 	}
 	
 	// Update is called once per frame
