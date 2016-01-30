@@ -55,8 +55,15 @@
      <Compile Include="Assets\Game Jam Menu Template\Scripts\StartOptions.cs" />
      <Compile Include="Assets\Scripts\InputManager.cs" />
      <Compile Include="Assets\Scripts\Mainmenu.cs" />
-     <Compile Include="Assets\Scripts\Openpause.cs" />
+<<<<<<< HEAD
      <Compile Include="Assets\Scripts\OptionMusic.cs" />
+=======
+     <Compile Include="Assets\Scripts\Openpause.cs" />
+<<<<<<< HEAD
+     <Compile Include="Assets\Scripts\OptionMusic.cs" />
+=======
+>>>>>>> b342b180427625683e9516e703c090f5724e9659
+>>>>>>> 102a2a98927921468f67b2faf3f3098fd60800e9
      <Compile Include="Assets\Scripts\Pausemenu.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\SpawnGameObjects.cs" />
