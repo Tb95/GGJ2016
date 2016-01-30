@@ -65,6 +65,7 @@
      <Compile Include="Assets\Scripts\Openpause.cs" />
      <Compile Include="Assets\Scripts\OptionMusic.cs" />
      <Compile Include="Assets\Scripts\Pausemenu.cs" />
+     <Compile Include="Assets\Scripts\PlayBackgroud.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\SpawnGameObjects.cs" />
      <Compile Include="Assets\Scripts\Spider.cs" />

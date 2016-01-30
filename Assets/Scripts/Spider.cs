@@ -67,13 +67,16 @@ public class Spider : MonoBehaviour {
 
 		// MANAGE IS DOWN
 		else {
-			// 1 - Animazione capovolta
-			// 2 - Mostra combo
-			// 3 - Dopo tot tempo torna not down
+			// 1 - Mostra combo
+			// 2 - Dopo tot tempo torna not down
 
-			// 3
+			// 2
 			if ((Time.time - timeOfGettingDown) >= downTime) {
 				isDown = false;
+
+				// Rotate by 180 degrees
+				gameObject.transform.RotateAround(gameObject.transform.forward, 180.0f);
+
 				// Reenable trigger that causes the player to lose health
 				gameObject.GetComponent<CapsuleCollider>().enabled = true;
 			}
@@ -163,6 +166,9 @@ public class Spider : MonoBehaviour {
 			isDown = true;
 			timeOfGettingDown = Time.time;
 			Debug.Log (comboList [0] + "");
+
+			// Rotate by 180 degrees
+			gameObject.transform.RotateAround(gameObject.transform.forward, 180.0f);
 
 			// Play sound
 			gameObject.GetComponent<AudioSource>().clip = flippinSpider;
