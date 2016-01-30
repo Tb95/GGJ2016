@@ -106,12 +106,12 @@ public class InputManager : MonoBehaviour
                 break;
 
             case Side.Left:
-                if (Input.GetKeyDown(KeyCode.Joystick1Button4))
+                if (currentSidePosition == Side.Left && Input.GetAxis("TriggerL") > SENSITIVITY)
                     player.attack(CurrentSideButton);
                 break;
 
             case Side.Right:
-                if (Input.GetKeyDown(KeyCode.Joystick1Button5))
+                if (currentSidePosition == Side.Right && Input.GetAxis("TriggerR") > SENSITIVITY)
                     player.attack(CurrentSideButton);
                 break;
         }
