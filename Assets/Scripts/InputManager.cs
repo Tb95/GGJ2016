@@ -2,6 +2,8 @@
 
 public class InputManager : MonoBehaviour
 {
+    const float SENSITIVITY = 0.3f;
+
     public enum Side
     {
         None,
@@ -18,13 +20,18 @@ public class InputManager : MonoBehaviour
             if (_currentSide == Side.None || value == Side.None)
                 _currentSide = value;
             else if ((_currentSide == Side.Right && value == Side.Left) || (_currentSide == Side.Left && value == Side.Right))
+            {
                 Debug.Log("DUE MANIII!! MUORIIII!!!11!!!11!");//Player.TwoHands()
+                _currentSide = value;
+            }
         }
     }
+    Player player;
 
     void Start()
     {
         CurrentSide = Side.None;
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
     void Update()
@@ -37,18 +44,21 @@ public class InputManager : MonoBehaviour
     void CheckHand()
     {
         bool none = true;
-        Debug.Log(Input.GetAxis("HorizontalL1"));
-        if (Input.GetAxis("HorizontalL1") != 0 || Input.GetAxis("VerticalL1") != 0 || Input.GetAxis("DPadX") != 0 ||
-            Input.GetAxis("DPadY") != 0 || Input.GetAxis("TriggerL") != 0 || Input.GetKey(KeyCode.Joystick1Button4))
+
+        if (Input.GetAxis("HorizontalL1") > SENSITIVITY || Input.GetAxis("HorizontalL1") < -SENSITIVITY ||
+            Input.GetAxis("VerticalL1") > SENSITIVITY || Input.GetAxis("VerticalL1") < -SENSITIVITY ||
+            Input.GetAxis("DPadX") > SENSITIVITY || Input.GetAxis("DPadX") < -SENSITIVITY ||
+            Input.GetAxis("DPadY") > SENSITIVITY || Input.GetAxis("DPadY") < -SENSITIVITY ||
+            Input.GetAxis("TriggerL") != 0 || Input.GetKey(KeyCode.Joystick1Button4))
         {
             CurrentSide = Side.Left;
             none = false;
         }
 
-        if (Input.GetAxis("HorizontalR1") > 0.8f || Input.GetAxis("HorizontalR1") < -0.8f || Input.GetAxis("VerticalR1") > 0.8f ||
-            Input.GetAxis("VerticalR1") < -0.8f || Input.GetAxis("TriggerR") != 0 || Input.GetKey(KeyCode.Joystick1Button0) ||
-            Input.GetKey(KeyCode.Joystick1Button1) || Input.GetKey(KeyCode.Joystick1Button2) || Input.GetKey(KeyCode.Joystick1Button3) ||
-            Input.GetKey(KeyCode.Joystick1Button5))
+        if (Input.GetAxis("HorizontalR1") > SENSITIVITY || Input.GetAxis("HorizontalR1") < -SENSITIVITY ||
+            Input.GetAxis("VerticalR1") > SENSITIVITY || Input.GetAxis("VerticalR1") < -SENSITIVITY ||
+            Input.GetAxis("TriggerR") != 0 || Input.GetKey(KeyCode.Joystick1Button0) || Input.GetKey(KeyCode.Joystick1Button1) ||
+            Input.GetKey(KeyCode.Joystick1Button2) || Input.GetKey(KeyCode.Joystick1Button3) ||Input.GetKey(KeyCode.Joystick1Button5))
             
         { 
             CurrentSide = Side.Right;
@@ -59,8 +69,6 @@ public class InputManager : MonoBehaviour
         {
             CurrentSide = Side.None;
         }
-
-        Debug.Log(CurrentSide);
     }
 
     void Move()
