@@ -16,16 +16,24 @@ public class Spider : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (movement == Movement.chase)
+		float dist = Vector3.Distance (transform.position, player.transform.position);
+		// If dist < 0.3 : do nothing
+		// If 0.3 < dist < 0.5 : just chase
+		// If 0.5 < dist : perform movement
+		if (dist >= 0.3 && dist <= 0.5) {
 			chase (player);
-		else if (movement == Movement.chaseZigZag)
-			chaseZigZag (player);
-		else if (movement == Movement.chaseWandering)
-			chaseWandering (player);
+		} else if (dist > 0.5) {
+			if (movement == Movement.chase)
+				chase (player);
+			else if (movement == Movement.chaseZigZag)
+				chaseZigZag (player);
+			else if (movement == Movement.chaseWandering)
+				chaseWandering (player);
+		}
 	}
 
 	void chase(GameObject player) {
-		transform.position = (player.transform.position - transform.position).normalized * speed * Time.deltaTime;
+		transform.position += (player.transform.position - transform.position).normalized * speed * Time.deltaTime;
 		transform.LookAt (player.transform.position);
 	}
 
@@ -44,7 +52,8 @@ public class Spider : MonoBehaviour {
 		} else {
 			tempDeltaX = (-speed) * Time.deltaTime;
 		}
-		transform.position = ((player.transform.position - transform.position).normalized + (player.transform.right * tempDeltaX).normalized).normalized * speed * Time.deltaTime;
+		deltaXForChaseZigZag -= tempDeltaX;
+		transform.position += ((player.transform.position - transform.position).normalized + (player.transform.right * tempDeltaX).normalized).normalized * speed * Time.deltaTime;
 		transform.LookAt (player.transform.position);
 	}
 
@@ -65,7 +74,7 @@ public class Spider : MonoBehaviour {
 				deltaXForChaseWandering -= speed * Time.deltaTime;
 			}
 		} else {
-			transform.position = (player.transform.position - transform.position).normalized * speed * Time.deltaTime;
+			transform.position += (player.transform.position - transform.position).normalized * speed * Time.deltaTime;
 		}
 		transform.LookAt (player.transform.position);
 	}
