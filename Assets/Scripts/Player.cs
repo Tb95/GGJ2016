@@ -50,6 +50,7 @@ public class Player : MonoBehaviour {
 			// Instantiate a bullet
             GameObject bullet = Instantiate(bulletPrefab, transform.position + transform.forward * 2, transform.rotation) as GameObject;
             bullet.GetComponent<Rigidbody>().velocity = transform.forward * velocitàAttacco;
+            bullet.GetComponent<BulletCollision>().player = gameObject;
             Destroy(bullet, raggio / velocitàAttacco);
             nextAvailableTimeForAttack = Time.realtimeSinceStartup + attackRate;
 

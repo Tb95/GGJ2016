@@ -265,6 +265,7 @@ public class InputManager : MonoBehaviour
 				// SPIDER EXPLOSION!!!
 				Debug.Log("Tango down!");
 				Destroy (possibleSpiderCombos [i].spider.gameObject);
+                GetComponent<Health>().DeadEnemy(true);
 				possibleSpiderCombos.Remove (possibleSpiderCombos [i]);
 				buttonTimeSequence.resetSequence();
 			}

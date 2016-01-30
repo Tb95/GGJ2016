@@ -5,17 +5,23 @@ using System.Collections.Generic;
 public class Health : MonoBehaviour
 {
     public Image hearthImage;
+    public Text pointsPrefab;
     public Canvas canvas;
     public Vector2 firstHearthPosition;
     public Vector2 offset;
 
     List<GameObject> hearts;
     int lastActiveHeart;
+    Text points;
 
     void Start()
     {
         hearts = new List<GameObject>();
         lastActiveHeart = 0;
+
+        points = Instantiate(pointsPrefab);
+        points.transform.SetParent(canvas.transform);
+        points.rectTransform.anchoredPosition = firstHearthPosition;
     }
 
     public void ChangeHeartsNumber(int n)
@@ -35,7 +41,7 @@ public class Health : MonoBehaviour
             {
                 Image newHeart = Instantiate(hearthImage);
                 newHeart.transform.SetParent(canvas.transform);
-                newHeart.rectTransform.anchoredPosition = firstHearthPosition + lastActiveHeart * offset;
+                newHeart.rectTransform.anchoredPosition = firstHearthPosition + (lastActiveHeart + 1) * offset;
                 hearts.Add(newHeart.gameObject);
                 lastActiveHeart++;
             }
@@ -48,5 +54,11 @@ public class Health : MonoBehaviour
                 lastActiveHeart--;
             }
         }
+    }
+
+    public void DeadEnemy(bool withCombo)
+    {
+        int previousPoints = int.Parse(points.text);
+        points.text = (previousPoints + (withCombo ? 3 : 1)).ToString();
     }
 }
