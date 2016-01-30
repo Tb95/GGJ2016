@@ -22,7 +22,9 @@ public class InputManager : MonoBehaviour
             else if ((_currentSideButton == Side.Right && value == Side.Left) || (_currentSideButton == Side.Left && value == Side.Right))
             {
                 Debug.Log("DUE MANIII!! MUORIIII!!!11!!!11!");//Player.TwoHands()
-                _currentSideButton = value;
+                Debug.DrawLine(transform.position + Vector3.up + new Vector3(-10, 0, -10), transform.position + Vector3.up + new Vector3(10, 0, 10), Color.red, 2);
+                Debug.DrawLine(transform.position + Vector3.up + new Vector3(10, 0, -10), transform.position + Vector3.up + new Vector3(-10, 0, 10), Color.red, 2);
+                //_currentSideButton = value;
             }
         }
     }
@@ -41,7 +43,7 @@ public class InputManager : MonoBehaviour
         CheckPosition();
         CheckHand();
         Move();
-        //Fire();
+        Fire();
     }
 
     void CheckHand()
@@ -84,13 +86,13 @@ public class InputManager : MonoBehaviour
 
             case Side.Left:
                 direction = new Vector3(Input.GetAxis("HorizontalL1"), 0, Input.GetAxis("VerticalL1"));
-                if (direction != Vector3.zero && currentSidePosition != Side.Right)
+                if (direction.magnitude > SENSITIVITY && currentSidePosition != Side.Right)
                     player.move(direction);
                 break;
 
             case Side.Right:
                 direction = new Vector3(Input.GetAxis("HorizontalR1"), 0, Input.GetAxis("VerticalR1"));
-                if (direction != Vector3.zero && currentSidePosition != Side.Left)
+                if (direction.magnitude > SENSITIVITY  && currentSidePosition != Side.Left)
                     player.move(direction);
                 break;
         }
@@ -104,13 +106,13 @@ public class InputManager : MonoBehaviour
                 break;
 
             case Side.Left:
-                if (Input.GetButton("4"))
-                    ;//Player.Fire(CurrentSide);
+                if (currentSidePosition == Side.Left && Input.GetAxis("TriggerL") > SENSITIVITY)
+                    player.attack(CurrentSideButton);
                 break;
 
             case Side.Right:
-                if (Input.GetButton("5"))
-                    ;//Player.Fire(CurrentSide);
+                if (currentSidePosition == Side.Right && Input.GetAxis("TriggerR") > SENSITIVITY)
+                    player.attack(CurrentSideButton);
                 break;
         }
     }
