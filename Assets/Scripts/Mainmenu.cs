@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Mainmenu : MonoBehaviour {
     public Canvas Exitmenu;
@@ -10,18 +12,45 @@ public class Mainmenu : MonoBehaviour {
     public Button Startbuton;
     public Button Optionbuton;
     public Button Exitbutton;
+    public AudioMixer mainMixer;
 
-	// Use this for initialization
+
+    Selectable _buttonOn;
+    Selectable ButtonOn
+    {
+        get { return _buttonOn; }
+        set
+        {
+            if (_buttonOn != value)
+            {
+                _buttonOn = value;
+                value.Select();
+            }
+        }
+    }
+    List<Selectable> buttons;
+    int currentButtonIndex;
+    bool dPadPressed;
+
 	void Start () {
-        Exitmenu = Exitmenu.GetComponent<Canvas> ();
-        Startmenu = Startmenu.GetComponent<Canvas> ();
-        Optionmenu = Optionmenu.GetComponent<Canvas> ();
-        Startbuton = Startbuton.GetComponent<Button> ();
-        Optionbuton = Optionbuton.GetComponent<Button> ();
-        Exitbutton = Exitbutton.GetComponent<Button>(); 
         Exitmenu.gameObject.SetActive (false);
         Startmenu.gameObject.SetActive (false);
         Optionmenu.gameObject.SetActive (false);
+
+        float volume;
+        mainMixer.GetFloat("musicVol", out volume);
+        Optionmenu.transform.GetChild(0).GetComponent<Slider>().value = volume;
+        mainMixer.GetFloat("sfxVol", out volume);
+        Optionmenu.transform.GetChild(1).GetComponent<Slider>().value = volume;
+
+        buttons = new List<Selectable>();
+        buttons.Add(Startbuton);
+        buttons.Add(Optionbuton);
+        buttons.Add(Exitbutton);
+        ButtonOn = buttons[0];
+        Startbuton.Select();
+        currentButtonIndex = 0;
+        dPadPressed = false;
 	}
     
     public void Exitpress()
@@ -30,6 +59,12 @@ public class Mainmenu : MonoBehaviour {
         Startbuton.gameObject.SetActive (false);
         Optionbuton.gameObject.SetActive (false);
         Exitbutton.gameObject.SetActive (false);
+
+        buttons.Clear();
+        buttons.Add(Exitmenu.transform.GetChild(0).GetChild(1).GetComponent<Button>());
+        buttons.Add(Exitmenu.transform.GetChild(0).GetChild(2).GetComponent<Button>());
+        ButtonOn = buttons[0];
+        currentButtonIndex = 0;
     }
 
     public void Startpress()
@@ -38,6 +73,13 @@ public class Mainmenu : MonoBehaviour {
         Startbuton.gameObject.SetActive(false);
         Optionbuton.gameObject.SetActive(false);
         Exitbutton.gameObject.SetActive(false);
+
+        buttons.Clear();
+        buttons.Add(Startmenu.transform.GetChild(0).GetComponent<Button>());
+        buttons.Add(Startmenu.transform.GetChild(1).GetComponent<Button>());
+        buttons.Add(Startmenu.transform.GetChild(2).GetComponent<Button>());
+        ButtonOn = buttons[0];
+        currentButtonIndex = 0;
     }
 
     public void Optionpress()
@@ -46,6 +88,13 @@ public class Mainmenu : MonoBehaviour {
         Startbuton.gameObject.SetActive(false);
         Optionbuton.gameObject.SetActive(false);
         Exitbutton.gameObject.SetActive(false);
+
+        buttons.Clear();
+        buttons.Add(Optionmenu.transform.GetChild(0).GetComponent<Slider>());
+        buttons.Add(Optionmenu.transform.GetChild(1).GetComponent<Slider>());
+        buttons.Add(Optionmenu.transform.GetChild(2).GetComponent<Button>());
+        ButtonOn = buttons[0];
+        currentButtonIndex = 0;
     }
 
     public void Nopress()
@@ -54,6 +103,13 @@ public class Mainmenu : MonoBehaviour {
         Startbuton.gameObject.SetActive(true);
         Optionbuton.gameObject.SetActive(true);
         Exitbutton.gameObject.SetActive(true);
+
+        buttons.Clear();
+        buttons.Add(Startbuton);
+        buttons.Add(Optionbuton);
+        buttons.Add(Exitbutton);
+        ButtonOn = buttons[0];
+        currentButtonIndex = 0;
     }
 
     public void Yespress ()
@@ -68,6 +124,13 @@ public class Mainmenu : MonoBehaviour {
         Startbuton.gameObject.SetActive(true);
         Optionbuton.gameObject.SetActive(true);
         Exitbutton.gameObject.SetActive(true);
+
+        buttons.Clear();
+        buttons.Add(Startbuton);
+        buttons.Add(Optionbuton);
+        buttons.Add(Exitbutton);
+        ButtonOn = buttons[0];
+        currentButtonIndex = 0;
     }
 
     public void playerone () 
@@ -80,9 +143,30 @@ public class Mainmenu : MonoBehaviour {
         SceneManager.LoadScene(2);
     }
 
-
-	// Update is called once per frame
 	void Update () {
-	
+        if (Input.GetKeyDown(KeyCode.Joystick1Button0) && ButtonOn is Button)
+            (ButtonOn as Button).onClick.Invoke();
+
+        if (Mathf.Abs(Input.GetAxis("DPadX")) > 0.5f && ButtonOn is Slider)
+            (ButtonOn as Slider).value += Input.GetAxis("DPadX") * 0.5f;
+
+        if (!dPadPressed && Input.GetAxis("DPadY") < -0.5f)
+        {
+            dPadPressed = true;
+            currentButtonIndex++;
+            if (currentButtonIndex >= buttons.Count)
+                currentButtonIndex = 0;
+            ButtonOn = buttons[currentButtonIndex];
+        }
+        else if (!dPadPressed && Input.GetAxis("DPadY") > 0.5f)
+        {
+            dPadPressed = true;
+            currentButtonIndex--;
+            if (currentButtonIndex < 0)
+                currentButtonIndex = buttons.Count - 1;
+            ButtonOn = buttons[currentButtonIndex];
+        }
+        else if (Mathf.Abs(Input.GetAxis("DPadY")) < 0.3f)
+            dPadPressed = false;
 	}
 }
