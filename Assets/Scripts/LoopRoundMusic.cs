@@ -7,19 +7,22 @@ public class LoopRoundMusic : MonoBehaviour
 
     bool isLooping;
     AudioSource audioSource;
+    float changeTime;
 
     void Start()
     {
         isLooping = false;
         audioSource = GetComponent<AudioSource>();
+        changeTime = Time.realtimeSinceStartup + startClip.length;
     }
 
     void Update()
     {
-        if (!isLooping && !audioSource.isPlaying)
+        if (!isLooping && Time.realtimeSinceStartup >= changeTime)
         {
             audioSource.clip = loopClip;
             audioSource.Play();
+            audioSource.loop = true;
             isLooping = true;
         }
     }

@@ -25,7 +25,6 @@ public class InputManager : MonoBehaviour
                 _currentSideButton = value;
             else if ((_currentSideButton == Side.Right && value == Side.Left) || (_currentSideButton == Side.Left && value == Side.Right))
             {
-                Debug.Log("DUE MANIII!! MUORIIII!!!11!!!11!");
                 player.Hit(1);
                 nextTwoHands = Time.realtimeSinceStartup + twoHandsCooldown;
             }
@@ -145,7 +144,7 @@ public class InputManager : MonoBehaviour
 
     void CheckPause()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Joystick1Button7))
         {
             if(isPause)
             {

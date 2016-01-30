@@ -33,7 +33,6 @@ public class Health : MonoBehaviour
                 Image newHeart = Instantiate(hearthImage);
                 newHeart.transform.SetParent(canvas.transform);
                 newHeart.rectTransform.anchoredPosition = firstHearthPosition + lastActiveHeart * offset;
-                Debug.Log(firstHearthPosition + lastActiveHeart * offset);
                 hearts.Add(newHeart.gameObject);
                 lastActiveHeart++;
             }
