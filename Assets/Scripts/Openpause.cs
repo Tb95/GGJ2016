@@ -9,8 +9,6 @@ public class Openpause : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-        Pausa = Pausa.GetComponent<GameObject> ();
-
         Pausa.gameObject.SetActive(false);
 	
 	}
