@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class InputManager : MonoBehaviour
 {
@@ -53,6 +55,8 @@ public class InputManager : MonoBehaviour
         Move();
         Fire();
         CheckPause();
+		UpdateSequence();
+		CheckSequences ();
     }
 
     void CheckHand()
@@ -158,4 +162,87 @@ public class InputManager : MonoBehaviour
             }
         }
     }
+
+	ButtonTimeSequence buttonTimeSequence = new ButtonTimeSequence();
+
+	void UpdateSequence()
+	{
+		/*
+		if (Input.GetButtonDown ("up") && currentSidePosition == Side.Right) {
+			Debug.Log ("up");
+
+			ButtonTime buttonTime;
+			buttonTime.button = upButton;
+			buttonTime.timeFromStart = Time.time;
+			buttonTimeSequence.prepend(buttonTime);
+		} else if (Input.GetButtonDown ("down") && currentSidePosition == Side.Right) {
+			Debug.Log ("down");
+		} else if (Input.GetButtonDown ("left") && currentSidePosition == Side.Right) {
+			Debug.Log ("left");
+		} else if (Input.GetButtonDown ("right") && currentSidePosition == Side.Right) {
+			Debug.Log ("right");
+		}
+
+		if (Input.GetButtonDown ("joystick button 0") && currentSidePosition == Side.Left) {
+			Debug.Log ("Button 0");
+		} else if (Input.GetButtonDown ("joystick button 1") && currentSidePosition == Side.Left) {
+			Debug.Log ("Button 1");
+		} else if (Input.GetButtonDown ("joystick button 2") && currentSidePosition == Side.Left) {
+			Debug.Log ("Button 2");
+		} else if (Input.GetButtonDown ("joystick button 3") && currentSidePosition == Side.Left) {
+			Debug.Log ("Button 3");
+		}*/
+		if (Input.GetButtonDown("yellow")) {
+			Debug.Log("yellow");
+
+			ButtonTimeSequence.ButtonTime buttonTime;
+			buttonTime.button = ButtonsManager.Button.yellowButton;
+			buttonTime.timeFromStart = Time.time;
+			buttonTimeSequence.prepend(buttonTime);
+		} else if (Input.GetButtonDown("red")) {
+			Debug.Log("red");
+
+			ButtonTimeSequence.ButtonTime buttonTime;
+			buttonTime.button = ButtonsManager.Button.redButton;
+			buttonTime.timeFromStart = Time.time;
+			buttonTimeSequence.prepend(buttonTime);
+		} else if (Input.GetButtonDown("green")) {
+			Debug.Log("green");
+
+			ButtonTimeSequence.ButtonTime buttonTime;
+			buttonTime.button = ButtonsManager.Button.greenButton;
+			buttonTime.timeFromStart = Time.time;
+			buttonTimeSequence.prepend(buttonTime);
+		} else if (Input.GetButtonDown("blue")) {
+			Debug.Log("blue");
+
+			ButtonTimeSequence.ButtonTime buttonTime;
+			buttonTime.button = ButtonsManager.Button.blueButton;
+			buttonTime.timeFromStart = Time.time;
+			buttonTimeSequence.prepend(buttonTime);
+		}
+	}
+
+	public List<SpiderCombo> possibleSpiderCombos = new List<SpiderCombo>();
+
+	void CheckSequences()
+	{
+		for (int i = 0; i < possibleSpiderCombos.Count; i++) {
+			if (buttonTimeSequence.isSequenceOK(possibleSpiderCombos[i], 3.0f)) {
+				// SPIDER EXPLOSION!!!
+				Debug.Log("Tango down!");
+				Destroy (possibleSpiderCombos [i].spider.gameObject);
+				possibleSpiderCombos.Remove (possibleSpiderCombos [i]);
+				buttonTimeSequence.resetSequence();
+			}
+		}
+	}
+
+	public Side getRandomSide() {
+		if (Random.Range (0, 2) == 0)
+			return Side.Left;
+		else
+			return Side.Right;
+	}
+
 }
