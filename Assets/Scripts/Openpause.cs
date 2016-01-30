@@ -6,7 +6,6 @@ public class Openpause : MonoBehaviour {
 
     public GameObject Pausa;
 
-	// Use this for initialization
 	void Start () {
 
         Pausa.gameObject.SetActive(false);
@@ -16,18 +15,19 @@ public class Openpause : MonoBehaviour {
     public void Escpress ()
     {
         Pausa.gameObject.SetActive(true);
+        Pausa.transform.GetChild(0).gameObject.SetActive(true);
+        Pausa.transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
+        Pausa.transform.GetChild(0).GetChild(1).gameObject.SetActive(true);
+        Pausa.transform.GetChild(0).GetChild(2).gameObject.SetActive(true);
         Time.timeScale = 0;
+        Pausa.GetComponent<Pausemenu>().Initialize();
     }
 
     public void Resume ()
     {
         Pausa.gameObject.SetActive(false);
+        Pausa.transform.parent.GetChild(2).gameObject.SetActive(false);
+        Pausa.transform.parent.GetChild(3).gameObject.SetActive(false);
         Time.timeScale = 1;
     }
-
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }

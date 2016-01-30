@@ -40,7 +40,10 @@ public class Pausemenu : MonoBehaviour {
         Optionmenu.transform.GetChild(0).GetComponent<Slider>().value = volume;
         mainMixer.GetFloat("sfxVol", out volume);
         Optionmenu.transform.GetChild(1).GetComponent<Slider>().value = volume;
+	}
 
+    public void Initialize()
+    {
         buttons = new List<Selectable>();
         buttons.Add(Resumebutton);
         buttons.Add(Optionbutton);
@@ -49,7 +52,7 @@ public class Pausemenu : MonoBehaviour {
         Resumebutton.Select();
         currentButtonIndex = 0;
         dPadPressed = false;
-	}
+    }
 	
     public void Optionpress ()
     {

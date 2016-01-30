@@ -244,5 +244,4 @@ public class InputManager : MonoBehaviour
 		else
 			return Side.Right;
 	}
-
 }
