@@ -11,33 +11,36 @@ public class InputManager : MonoBehaviour
         Right
     }
     
-    Side _currentSide;
-    Side CurrentSide
+    Side _currentSideButton;
+    Side CurrentSideButton
 	{
-        get { return _currentSide; }
+        get { return _currentSideButton; }
         set 
         {
-            if (_currentSide == Side.None || value == Side.None)
-                _currentSide = value;
-            else if ((_currentSide == Side.Right && value == Side.Left) || (_currentSide == Side.Left && value == Side.Right))
+            if (_currentSideButton == Side.None || value == Side.None)
+                _currentSideButton = value;
+            else if ((_currentSideButton == Side.Right && value == Side.Left) || (_currentSideButton == Side.Left && value == Side.Right))
             {
                 Debug.Log("DUE MANIII!! MUORIIII!!!11!!!11!");//Player.TwoHands()
-                _currentSide = value;
+                _currentSideButton = value;
             }
         }
     }
+    Side currentSidePosition;
     Player player;
 
     void Start()
     {
-        CurrentSide = Side.None;
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        CurrentSideButton = Side.None;
+        currentSidePosition = Side.None;
+        player = GetComponent<Player>();
     }
 
     void Update()
     {
+        CheckPosition();
         CheckHand();
-        //Move();
+        Move();
         //Fire();
     }
 
@@ -51,7 +54,7 @@ public class InputManager : MonoBehaviour
             Input.GetAxis("DPadY") > SENSITIVITY || Input.GetAxis("DPadY") < -SENSITIVITY ||
             Input.GetAxis("TriggerL") != 0 || Input.GetKey(KeyCode.Joystick1Button4))
         {
-            CurrentSide = Side.Left;
+            CurrentSideButton = Side.Left;
             none = false;
         }
 
@@ -61,42 +64,41 @@ public class InputManager : MonoBehaviour
             Input.GetKey(KeyCode.Joystick1Button2) || Input.GetKey(KeyCode.Joystick1Button3) ||Input.GetKey(KeyCode.Joystick1Button5))
             
         { 
-            CurrentSide = Side.Right;
+            CurrentSideButton = Side.Right;
             none = false;
         }
 
         if (none)
         {
-            CurrentSide = Side.None;
+            CurrentSideButton = Side.None;
         }
     }
 
     void Move()
     {
         Vector3 direction = Vector3.zero;
-
-        switch (CurrentSide)
+        switch (CurrentSideButton)
         {
             case Side.None:
                 break;
 
             case Side.Left:
                 direction = new Vector3(Input.GetAxis("HorizontalL1"), 0, Input.GetAxis("VerticalL1"));
-                if(direction != Vector3.zero)
-                    ;//Player.Move(direction);
+                if (direction != Vector3.zero && currentSidePosition != Side.Right)
+                    player.move(direction);
                 break;
 
             case Side.Right:
                 direction = new Vector3(Input.GetAxis("HorizontalR1"), 0, Input.GetAxis("VerticalR1"));
-                if(direction != Vector3.zero)
-                    ;//Player.Move(direction);
+                if (direction != Vector3.zero && currentSidePosition != Side.Left)
+                    player.move(direction);
                 break;
         }
     }
 
     void Fire()
     {
-        switch (CurrentSide)
+        switch (CurrentSideButton)
         {
             case Side.None:
                 break;
@@ -111,5 +113,21 @@ public class InputManager : MonoBehaviour
                     ;//Player.Fire(CurrentSide);
                 break;
         }
+    }
+
+    void CheckPosition()
+    {
+        RaycastHit hitInfo = new RaycastHit();
+        int layerMask = 1 << 8;
+
+        if (Physics.Raycast(transform.position, transform.up, out hitInfo, 15, layerMask))
+        {
+            if (hitInfo.collider.tag == "Left")
+                currentSidePosition = Side.Left;
+            else if (hitInfo.collider.tag == "Right")
+                currentSidePosition = Side.Right;
+        }
+        else
+            currentSidePosition = Side.None;
     }
 }
