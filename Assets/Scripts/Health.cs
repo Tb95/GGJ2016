@@ -20,6 +20,9 @@ public class Health : MonoBehaviour
 
     public void ChangeHeartsNumber(int n)
     {
+        if (n < 0)
+            return;
+
         if (n > lastActiveHeart)
         {
             while (lastActiveHeart < hearts.Count && lastActiveHeart < n)
