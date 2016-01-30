@@ -45,6 +45,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
+     <Compile Include="Assets\BlueRedManager.cs" />
+=======
      <Compile Include="Assets\Game Jam Menu Template\Scripts\DontDestroy.cs" />
      <Compile Include="Assets\Game Jam Menu Template\Scripts\EventSystemChecker.cs" />
      <Compile Include="Assets\Game Jam Menu Template\Scripts\Pause.cs" />
@@ -53,6 +56,7 @@
      <Compile Include="Assets\Game Jam Menu Template\Scripts\SetAudioLevels.cs" />
      <Compile Include="Assets\Game Jam Menu Template\Scripts\ShowPanels.cs" />
      <Compile Include="Assets\Game Jam Menu Template\Scripts\StartOptions.cs" />
+>>>>>>> 102a2a98927921468f67b2faf3f3098fd60800e9
      <Compile Include="Assets\Scripts\InputManager.cs" />
      <Compile Include="Assets\Scripts\Mainmenu.cs" />
 <<<<<<< HEAD
