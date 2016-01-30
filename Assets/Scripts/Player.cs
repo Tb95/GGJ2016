@@ -11,6 +11,7 @@ public class Player : MonoBehaviour {
     public float raggio;
     [Range(0, 2)]
     public float rotationSpeed;
+    public float attackRate;
     public GameObject bulletPrefab;
 
     Rigidbody myRigidbody;
@@ -35,8 +36,12 @@ public class Player : MonoBehaviour {
 
     public void attack(InputManager.Side side)
     {
-        GameObject bullet = Instantiate(bulletPrefab, transform.position + transform.forward * 2, transform.rotation) as GameObject;
-        bullet.GetComponent<Rigidbody>().velocity = transform.forward * velocitàAttacco;
-        Destroy(bullet, raggio / velocitàAttacco);
+        if (Time.realtimeSinceStartup > nextAvailableTimeForAttack)
+        {
+            GameObject bullet = Instantiate(bulletPrefab, transform.position + transform.forward * 2, transform.rotation) as GameObject;
+            bullet.GetComponent<Rigidbody>().velocity = transform.forward * velocitàAttacco;
+            Destroy(bullet, raggio / velocitàAttacco);
+            nextAvailableTimeForAttack = Time.realtimeSinceStartup + attackRate;
+        }
     }
 }
