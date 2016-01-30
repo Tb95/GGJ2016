@@ -107,8 +107,17 @@ public class Spider : MonoBehaviour {
                     gameObject.GetComponent<CapsuleCollider>().enabled = true;
 
                     //Animate turn
-                    Debug.Log("turn");
                     animator.SetTrigger("Turn");
+
+                    //Destroy trail
+                    Destroy(trail.gameObject);
+
+                    //Destroy combo buttons
+                    foreach (Transform child in comboText.transform)
+                    {
+                        Destroy(child.gameObject);
+                    }
+                    comboText.SetActive(false);
                 }
             }
 	}
