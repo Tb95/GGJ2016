@@ -27,7 +27,7 @@ public class Health : MonoBehaviour
     public void ChangeHeartsNumber(int n)
     {
         if (n < 0)
-            return;
+            n = 0;
 
         if (n > lastActiveHeart)
         {

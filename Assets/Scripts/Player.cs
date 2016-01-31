@@ -91,4 +91,12 @@ public class Player : MonoBehaviour {
 		Destroy (gameObject);
 		*/
 	}
+
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag == "Spider")
+        {
+            other.gameObject.GetComponent<Spider>().CollisionEnter(gameObject);
+        }
+    }
 }
