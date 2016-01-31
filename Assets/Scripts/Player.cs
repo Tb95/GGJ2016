@@ -107,6 +107,7 @@ public class Player : MonoBehaviour {
 		} else {
 			if (GetComponent<InputManager> ().playerNumber == 1) {
 				GameObject player2 = GameObject.Find ("Player2");
+				GameObject.Find ("Main Camera").GetComponent<CameraFollow> ().target = player2.transform;
 				InputManager.possibleSpiderCombos.ForEach (sc => sc.spider.player = player2);
 				Destroy (gameObject);
 			} else {

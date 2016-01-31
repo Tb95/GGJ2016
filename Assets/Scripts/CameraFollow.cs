@@ -28,7 +28,6 @@ public class CameraFollow : MonoBehaviour {
     void Start()
     {
         myCamera = GetComponent<Camera>();
-        speed = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().velocità;
         cameraCollisionSideX = CameraCollisionSideX.None;
         cameraCollisionSideY = CameraCollisionSideY.None;
         myRigidbody = GetComponent<Rigidbody>();
@@ -36,6 +35,7 @@ public class CameraFollow : MonoBehaviour {
 
     void Update()
     {
+		speed = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().velocità;
         var players = GameObject.FindGameObjectsWithTag("Player");
         Vector3 centreOfMass = Vector3.zero;
         for (int i = 0; i < players.Length; i++)
