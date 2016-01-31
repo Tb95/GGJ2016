@@ -16,6 +16,7 @@ public class Spider : MonoBehaviour {
 	public bool isDown = false;
 	public InputManager.Side side;
 	public int health = 3;
+    public int resistance = 1;
 	public float downTime = 2.0f;
 	// ZIG ZAG
 	public int minZigZagLength = 3;
@@ -43,13 +44,15 @@ public class Spider : MonoBehaviour {
     Animator animator;
     //SPAWNER
     SpawnGameObjects spawner;
-	public GameObject comboText;
+    public GameObject comboTextPlayer1;
+    public GameObject comboTextPlayer2;
 	GameObject spiderTrail;
 	public GameObject trail;
 
 	// Use this for initialization
 	void Start () {
-		comboText = spawner.comboText;
+        comboTextPlayer1 = spawner.comboTextPlayer1;
+        comboTextPlayer2 = spawner.comboTextPlayer2;
 		spiderTrail = spawner.spiderTrail;
 		
 		var players = GameObject.FindGameObjectsWithTag("Player");
@@ -59,13 +62,13 @@ public class Spider : MonoBehaviour {
 		buttonsManager = GameObject.FindGameObjectWithTag ("ButtonsManager").GetComponent<ButtonsManager>();
 		comboList = buttonsManager.getRandomCombo(comboLength, side);
 		spiderCombo = new SpiderCombo (comboList, this);
-		player.GetComponent<InputManager> ().possibleSpiderCombos.Add(spiderCombo);
+		InputManager.possibleSpiderCombos.Add(spiderCombo);
 
         animator = GetComponent<Animator>();
 
 		// Play fall sound
 		gameObject.GetComponent<AudioSource>().clip = spiderFall;
-		gameObject.GetComponent<AudioSource> ().Play ();
+        gameObject.GetComponent<AudioSource>().PlayScheduled(2);
 	}
 	
 	// Update is called once per frame
@@ -74,6 +77,8 @@ public class Spider : MonoBehaviour {
         {
             if (animator.GetCurrentAnimatorStateInfo(0).IsName("Walk"))
             {
+                GetComponent<Collider>().enabled = true;
+
                 float dist = Vector3.Distance(transform.position, player.transform.position);
                 // If dist < 0.3 : do nothing
                 // If 0.3 < dist < 2 : just chase
@@ -97,21 +102,59 @@ public class Spider : MonoBehaviour {
         // MANAGE IS DOWN
         else
         {
+            GameObject player1 = null;
+            GameObject player2 = null;
+            foreach (var item in GameObject.FindGameObjectsWithTag("Player"))
+            {
+                if (item.GetComponent<InputManager>().playerNumber == 1)
+                    player1 = item;
+                else
+                    player2 = item;
+            }
+
 			// 1 - Mostra combo e trail se è quello down più vicino
-			List<SpiderCombo> sc = player.GetComponent<InputManager> ().possibleSpiderCombos.FindAll(aSc => aSc.spider.isDown);
-			sc.Sort((c1, c2) => (int)Vector3.Distance(player.transform.position, c1.spider.transform.position) - (int)Vector3.Distance(player.transform.position, c2.spider.transform.position));
+            bool activateTrail1 = false;
+            bool activateTrail2 = false;
+            //PLAYER1
+			List<SpiderCombo> sc = InputManager.possibleSpiderCombos.FindAll(aSc => aSc.spider.isDown);
+			sc.Sort((c1, c2) => (int)Vector3.Distance(player1.transform.position, c1.spider.transform.position) - (int)Vector3.Distance(player1.transform.position, c2.spider.transform.position));
 			if (sc [0].spider == this) {
-				trail.SetActive (true);
-				for (int i = 0; i < buts.Count; i++) {
-					buts [i].SetActive (true);
+                activateTrail1 = true;
+				for (int i = 0; i < butsPlayer1.Count; i++) {
+					butsPlayer1 [i].SetActive (true);
 				}
 			} else {
-				trail.SetActive (false);
+                activateTrail1 = false;
 
-				for (int i = 0; i < buts.Count; i++) {
-					buts [i].SetActive (false);
+				for (int i = 0; i < butsPlayer1.Count; i++) {
+					butsPlayer1 [i].SetActive (false);
 				}
 			}
+
+            //PLAYER2
+            if (player2 != null)
+            {
+                sc.Sort((c1, c2) => (int)Vector3.Distance(player2.transform.position, c1.spider.transform.position) - (int)Vector3.Distance(player2.transform.position, c2.spider.transform.position));
+                if (sc[0].spider == this)
+                {
+                    activateTrail2 = true;
+                    for (int i = 0; i < butsPlayer1.Count; i++)
+                    {
+                        butsPlayer2[i].SetActive(true);
+                    }
+                }
+                else
+                {
+                    activateTrail2 = false;
+
+                    for (int i = 0; i < butsPlayer1.Count; i++)
+                    {
+                        butsPlayer2[i].SetActive(false);
+                    }
+                }
+            }
+
+            trail.SetActive(activateTrail1 || activateTrail2);
 
             // 2 - Dopo tot tempo torna not down
             if ((Time.time - timeOfGettingDown) >= downTime)
@@ -128,9 +171,14 @@ public class Spider : MonoBehaviour {
 				Destroy(trail.gameObject);
 
                 //Destroy combo buttons
-				for (int i = 0; i < buts.Count; i++) {
-					Destroy (buts [i]);
+				for (int i = 0; i < butsPlayer1.Count; i++) {
+					Destroy (butsPlayer1 [i]);
 				}
+
+                for (int i = 0; i < butsPlayer2.Count; i++)
+                {
+                    Destroy(butsPlayer2[i]);
+                }
             }
         }
 	}
@@ -204,11 +252,13 @@ public class Spider : MonoBehaviour {
 	}
 
 	float timeOfGettingDown = 0;
-	public List<GameObject> buts;
+    public List<GameObject> butsPlayer1 = new List<GameObject>();
+    public List<GameObject> butsPlayer2 = new List<GameObject>();
 	public void Hit(int damage, GameObject playerThatHit) {
 		health -= damage;
+
 		if (health <= 0) {
-			player.GetComponent<InputManager> ().possibleSpiderCombos.Remove (spiderCombo);
+			InputManager.possibleSpiderCombos.Remove (spiderCombo);
 
 			// Play sound
 			player.GetComponent<AudioSource>().clip = spiderKill;
@@ -217,7 +267,7 @@ public class Spider : MonoBehaviour {
             playerThatHit.GetComponent<Health>().DeadEnemy(false);
             spawner.DeadEnemy();
 			Destroy (gameObject);
-		} else {
+		} else if (health % resistance == 0) {
 			isDown = true;
 			timeOfGettingDown = Time.time;
 
@@ -228,15 +278,25 @@ public class Spider : MonoBehaviour {
 			trail.GetComponent<RotateAround> ().vec = gameObject.transform.up;
 
 			// Show combo label
-			buts = new List<GameObject> ();
+            butsPlayer1.Clear();
+            butsPlayer2.Clear();
 			int distanceBetweenButtons = 50;
 			for (int i = 0; i < spiderCombo.buttonsList.Count; i++) {
 				ButtonsManager.Button b = spiderCombo.buttonsList [i];
-				buts.Add (buttonsManager.getGameObjectFromButton (b));
+                butsPlayer1.Add(buttonsManager.getGameObjectFromButton(b));
+
+                if(comboTextPlayer2 != null)
+                    butsPlayer2.Add(buttonsManager.getGameObjectFromButton(b));
 			}
-			for (int i = 0; i < buts.Count; i++) {
-				buts [i].transform.parent = comboText.transform;
-				buts [i].transform.position = comboText.transform.position - comboText.transform.up * (i + 1) * distanceBetweenButtons;
+			for (int i = 0; i < butsPlayer1.Count; i++) {
+				butsPlayer1 [i].transform.SetParent(comboTextPlayer1.transform);
+                butsPlayer1[i].transform.position = comboTextPlayer1.transform.position - comboTextPlayer1.transform.up * (i + 1) * distanceBetweenButtons;
+
+                if (comboTextPlayer2 != null)
+                {
+                    butsPlayer2[i].transform.SetParent(comboTextPlayer2.transform);
+                    butsPlayer2[i].transform.position = comboTextPlayer2.transform.position - comboTextPlayer2.transform.up * (i + 1) * distanceBetweenButtons;
+                }			
 			}
 
 			// Play sound
@@ -252,6 +312,15 @@ public class Spider : MonoBehaviour {
             //Attack who hit you
             player = playerThatHit;
 		}
+        else
+        {
+            // Play sound
+            gameObject.GetComponent<AudioSource>().clip = flippinSpider;
+            gameObject.GetComponent<AudioSource>().Play();
+
+            //Attack who hit you
+            player = playerThatHit;
+        }
 	}
 
     public void SetSpawner(SpawnGameObjects spawner)
