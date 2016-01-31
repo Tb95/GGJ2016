@@ -219,7 +219,7 @@ public class InputManager : MonoBehaviour
 		} else if (Input.GetButtonDown ("joystick button 3") && currentSidePosition == Side.Left) {
 			Debug.Log ("Button 3");
 		}*/
-		if (Input.GetKeyDown(KeyCode.Z) && Input.GetKeyDown(buttons[3])) {
+		if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(buttons[3])) {
 			Debug.Log("yellow");
 
 			ButtonTimeSequence.ButtonTime buttonTime;
@@ -227,7 +227,7 @@ public class InputManager : MonoBehaviour
 			buttonTime.timeFromStart = Time.time;
 			buttonTimeSequence.prepend(buttonTime);
         }
-        else if (Input.GetKeyDown(KeyCode.X) && Input.GetKeyDown(buttons[1]))
+        else if (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(buttons[1]))
         {
 			Debug.Log("red");
 
@@ -236,7 +236,7 @@ public class InputManager : MonoBehaviour
 			buttonTime.timeFromStart = Time.time;
 			buttonTimeSequence.prepend(buttonTime);
         }
-        else if (Input.GetKeyDown(KeyCode.C) && Input.GetKeyDown(buttons[0]))
+        else if (Input.GetKeyDown(KeyCode.C) || Input.GetKeyDown(buttons[0]))
         {
 			Debug.Log("green");
 
@@ -245,7 +245,7 @@ public class InputManager : MonoBehaviour
 			buttonTime.timeFromStart = Time.time;
 			buttonTimeSequence.prepend(buttonTime);
         }
-        else if (Input.GetKeyDown(KeyCode.V) && Input.GetKeyDown(buttons[2]))
+        else if (Input.GetKeyDown(KeyCode.V) || Input.GetKeyDown(buttons[2]))
         {
 			Debug.Log("blue");
 
@@ -263,7 +263,12 @@ public class InputManager : MonoBehaviour
 		for (int i = 0; i < possibleSpiderCombos.Count; i++) {
 			if (buttonTimeSequence.isSequenceOK(possibleSpiderCombos[i], 3.0f)) {
 				// SPIDER EXPLOSION!!!
-				Debug.Log("Tango down!");
+                		possibleSpiderCombos[i].spider.GetSpawner().DeadEnemy();
+				// Togli la combo
+				var children = new List<GameObject>();
+				foreach (Transform child in possibleSpiderCombos [i].spider.comboText.transform) children.Add(child.gameObject);
+				children.ForEach(child => Destroy(child));
+				possibleSpiderCombos [i].spider.comboText.SetActive (false);
 				Destroy (possibleSpiderCombos [i].spider.gameObject);
                 GetComponent<Health>().DeadEnemy(true);
 				possibleSpiderCombos.Remove (possibleSpiderCombos [i]);

@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class Spider : MonoBehaviour {
 
-	public enum Movement {chase, chaseZigZag, chaseArchs};
+	public enum Movement {idle, chase, chaseZigZag, chaseArchs};
 
 	public Movement movement = Movement.chase;
 	// BASIC
@@ -22,6 +23,7 @@ public class Spider : MonoBehaviour {
 	public int minArchLength = 3;
 	public int maxArchLength = 7;
 	public int archProbability = 40;
+    [HideInInspector]
 	public GameObject player;
 	// COMBO
 	public int comboLength = 3;
@@ -33,56 +35,91 @@ public class Spider : MonoBehaviour {
 	public AudioClip flippinSpider;
 	public AudioClip spiderCatch;
 	public AudioClip spiderKill;
+	public AudioClip spiderFall;
 	// BAD THINGS
 	SpiderCombo spiderCombo;
+    // ANIMATOR
+    Animator animator;
+    //SPAWNER
+    SpawnGameObjects spawner;
+	public GameObject comboText;
+	GameObject spiderTrail;
+	GameObject trail;
 
 	// Use this for initialization
 	void Start () {
+		comboText = spawner.comboText;
+		spiderTrail = spawner.spiderTrail;
+		
 		var players = GameObject.FindGameObjectsWithTag("Player");
         player = players[Random.Range(0, players.Length)];
 
 		side = player.GetComponent<InputManager> ().getRandomSide ();
-		buttonsManager = new ButtonsManager ();
+		buttonsManager = GameObject.FindGameObjectWithTag ("ButtonsManager").GetComponent<ButtonsManager>();
 		comboList = buttonsManager.getRandomCombo(comboLength, side);
 		spiderCombo = new SpiderCombo (comboList, this);
 		player.GetComponent<InputManager> ().possibleSpiderCombos.Add(spiderCombo);
+
+        animator = GetComponent<Animator>();
+
+		// Play fall sound
+		gameObject.GetComponent<AudioSource>().clip = spiderFall;
+		gameObject.GetComponent<AudioSource> ().Play ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (!isDown) {
-			float dist = Vector3.Distance (transform.position, player.transform.position);
-			// If dist < 0.3 : do nothing
-			// If 0.3 < dist < 2 : just chase
-			// If 2 < dist : perform movement
-			if (dist >= doNothingTriggerDistance && dist <= chaseTriggerDistance) {
-				chase (player);
-			} else if (dist > chaseTriggerDistance) {
-				if (movement == Movement.chase)
-					chase (player);
-				else if (movement == Movement.chaseZigZag)
-					chaseZigZag (player);
-				else if (movement == Movement.chaseArchs)
-					chaseArchs (player);
-			}
-		}
+            if (!isDown)
+            {
+                if (animator.GetCurrentAnimatorStateInfo(0).IsName("Walk"))
+                {
+                    float dist = Vector3.Distance(transform.position, player.transform.position);
+                    // If dist < 0.3 : do nothing
+                    // If 0.3 < dist < 2 : just chase
+                    // If 2 < dist : perform movement
+                    if (dist >= doNothingTriggerDistance && dist <= chaseTriggerDistance)
+                    {
+                        chase(player);
+                    }
+                    else if (dist > chaseTriggerDistance)
+                    {
+                        if (movement == Movement.chase)
+                            chase(player);
+                        else if (movement == Movement.chaseZigZag)
+                            chaseZigZag(player);
+                        else if (movement == Movement.chaseArchs)
+                            chaseArchs(player);
+                    }
+                }
+            }
 
-		// MANAGE IS DOWN
-		else {
-			// 1 - Mostra combo
-			// 2 - Dopo tot tempo torna not down
+            // MANAGE IS DOWN
+            else
+            {
+                // 1 - Mostra combo
+                // 2 - Dopo tot tempo torna not down
+                // 2
+                if ((Time.time - timeOfGettingDown) >= downTime)
+                {
+                    isDown = false;
 
-			// 2
-			if ((Time.time - timeOfGettingDown) >= downTime) {
-				isDown = false;
+                    // Reenable trigger that causes the player to lose health
+                    gameObject.GetComponent<CapsuleCollider>().enabled = true;
 
-				// Rotate by 180 degrees
-				gameObject.transform.RotateAround(gameObject.transform.forward, 180.0f);
+                    //Animate turn
+                    animator.SetTrigger("Turn");
 
-				// Reenable trigger that causes the player to lose health
-				gameObject.GetComponent<CapsuleCollider>().enabled = true;
-			}
-		}
+                    //Destroy trail
+                    Destroy(trail.gameObject);
+
+                    //Destroy combo buttons
+                    foreach (Transform child in comboText.transform)
+                    {
+                        Destroy(child.gameObject);
+                    }
+                    comboText.SetActive(false);
+                }
+            }
 	}
 
 	void chase(GameObject player) {
@@ -134,14 +171,14 @@ public class Spider : MonoBehaviour {
 
 	float lastAttackTime = 0;
 	public float attackEveryTotSeconds = 0.5f;
-	void OnTriggerEnter(Collider other) {
+	void OnCollisionEnter(Collision other) {
 		if (other.gameObject.tag == "Player" && (Time.time - lastAttackTime) > attackEveryTotSeconds) {
 			other.gameObject.GetComponent<Player> ().Hit (1);
 			lastAttackTime = Time.time;
 		}
 	}
 
-	void OnTriggerStay(Collider other) {
+	void OnCollisionStay(Collision other) {
 		if (other.gameObject.tag == "Player" && (Time.time - lastAttackTime) > attackEveryTotSeconds) {
 			other.gameObject.GetComponent<Player> ().Hit (1);
 
@@ -164,14 +201,32 @@ public class Spider : MonoBehaviour {
 			player.GetComponent<AudioSource> ().Play ();
 
             playerThatHit.GetComponent<Health>().DeadEnemy(false);
+            spawner.DeadEnemy();
 			Destroy (gameObject);
 		} else {
 			isDown = true;
 			timeOfGettingDown = Time.time;
-			Debug.Log (comboList [0] + "");
 
-			// Rotate by 180 degrees
-			gameObject.transform.RotateAround(gameObject.transform.forward, 180.0f);
+			// Create trail renderer
+			trail = Instantiate(spiderTrail);
+			trail.transform.position = transform.position + transform.right * 2.0f;
+			trail.GetComponent<RotateAround> ().target = gameObject.transform;
+			trail.GetComponent<RotateAround> ().vec = gameObject.transform.up;
+			trail.SetActive (true);
+
+			// Show combo label
+			comboText.SetActive (true);
+			List<GameObject> buts = new List<GameObject>();
+			int distanceBetweenButtons = 50;
+			for (int i = 0; i < spiderCombo.buttonsList.Count; i++) {
+				ButtonsManager.Button b = spiderCombo.buttonsList[i];
+				buts.Add(buttonsManager.getGameObjectFromButton(b));
+			}
+			for (int i = 0; i < buts.Count; i++) {
+				buts[i].transform.parent = comboText.transform;
+				buts[i].transform.position = comboText.transform.position - comboText.transform.up * (i + 1) * distanceBetweenButtons;
+				buts[i].SetActive(true);
+			}
 
 			// Play sound
 			gameObject.GetComponent<AudioSource>().clip = flippinSpider;
@@ -179,6 +234,22 @@ public class Spider : MonoBehaviour {
 
 			// Deactivate trigger that cause the player to lose health
 			gameObject.GetComponent<CapsuleCollider>().enabled = false;
+
+            //Animate turn
+            animator.SetTrigger("Turn");
+
+            //Attack who hit you
+            player = playerThatHit;
 		}
 	}
+
+    public void SetSpawner(SpawnGameObjects spawner)
+    {
+        this.spawner = spawner;
+    }
+
+    public SpawnGameObjects GetSpawner()
+    {
+        return spawner;
+    }
 }

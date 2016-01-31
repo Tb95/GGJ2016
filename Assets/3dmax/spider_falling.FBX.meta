@@ -1,0 +1,571 @@
+fileFormatVersion: 2
+guid: f68743a7cad5cd847a3764c073224831
+timeCreated: 1454180518
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: addome_bone
+    100002: addome_end_bone
+    100004: big_eye_L
+    100006: big_eye_R
+    100008: Bone001
+    100010: Bone002
+    100012: Bone003
+    100014: Bone004
+    100016: chela_L_bone
+    100018: chela_L_end_bone
+    100020: chela_R_bone
+    100022: chela_R_bone 1
+    100024: Cylinder001
+    100026: Cylinder003
+    100028: eye_L01
+    100030: eye_L01 1
+    100032: eye_R_01
+    100034: eye_R_02
+    100036: eye_R_03
+    100038: eye_R_03 1
+    100040: IK Chain001
+    100042: IK Chain002
+    100044: IK Chain003
+    100046: IK Chain004
+    100048: IK Chain005
+    100050: IK Chain006
+    100052: IK Chain007
+    100054: IK Chain008
+    100056: IK Chain009
+    100058: IK Chain010
+    100060: IK Chain011
+    100062: IK Chain012
+    100064: IK Chain013
+    100066: IK Chain014
+    100068: IK Chain015
+    100070: IK Chain016
+    100072: leg_004
+    100074: leg_006
+    100076: leg_008
+    100078: leg_009
+    100080: leg_01
+    100082: leg_010
+    100084: leg_011
+    100086: leg_012
+    100088: leg_B_01
+    100090: leg_B_01(mirrored)
+    100092: leg_B_02
+    100094: leg_B_02(mirrored)
+    100096: leg_B_03
+    100098: leg_B_03(mirrored)
+    100100: leg_B_04
+    100102: leg_B_04(mirrored)
+    100104: leg_B_05
+    100106: leg_B_05(mirrored)
+    100108: leg_B_06
+    100110: leg_B_06(mirrored)
+    100112: leg_B_controller
+    100114: leg_B_controller001
+    100116: leg_B_end
+    100118: leg_BB02
+    100120: leg_BB02(mirrored)
+    100122: leg_BB_01
+    100124: leg_BB_01(mirrored)
+    100126: leg_BB_03
+    100128: leg_BB_03(mirrored)
+    100130: leg_BB_04
+    100132: leg_BB_04(mirrored)
+    100134: leg_BB_05
+    100136: leg_BB_05(mirrored)
+    100138: leg_BB_06
+    100140: leg_BB_06(mirrored)
+    100142: leg_BB_controller
+    100144: leg_BB_controller001
+    100146: leg_BB_end
+    100148: leg_F_007
+    100150: leg_F_007(mirrored)
+    100152: leg_F_008
+    100154: leg_F_008(mirrored)
+    100156: leg_F_009
+    100158: leg_F_009(mirrored)
+    100160: leg_F_01
+    100162: leg_F_01(mirrored)
+    100164: leg_F_010
+    100166: leg_F_010(mirrored)
+    100168: leg_F_011
+    100170: leg_F_011(mirrored)
+    100172: leg_F_012
+    100174: leg_F_012(mirrored)
+    100176: leg_F_02
+    100178: leg_F_02(mirrored)
+    100180: leg_F_03
+    100182: leg_F_03(mirrored)
+    100184: leg_F_04
+    100186: leg_F_04(mirrored)
+    100188: leg_F_05
+    100190: leg_F_05(mirrored)
+    100192: leg_F_06
+    100194: leg_F_06(mirrored)
+    100196: leg_f_controller
+    100198: leg_f_controller001
+    100200: leg_F_end
+    100202: leg_F_end001
+    100204: leg_FF_controller
+    100206: leg_FF_controller001
+    100208: spider
+    100210: //RootNode
+    100212: torace_bone
+    100214: torace_end_bone
+    400000: addome_bone
+    400002: addome_end_bone
+    400004: big_eye_L
+    400006: big_eye_R
+    400008: Bone001
+    400010: Bone002
+    400012: Bone003
+    400014: Bone004
+    400016: chela_L_bone
+    400018: chela_L_end_bone
+    400020: chela_R_bone
+    400022: chela_R_bone 1
+    400024: Cylinder001
+    400026: Cylinder003
+    400028: eye_L01
+    400030: eye_L01 1
+    400032: eye_R_01
+    400034: eye_R_02
+    400036: eye_R_03
+    400038: eye_R_03 1
+    400040: IK Chain001
+    400042: IK Chain002
+    400044: IK Chain003
+    400046: IK Chain004
+    400048: IK Chain005
+    400050: IK Chain006
+    400052: IK Chain007
+    400054: IK Chain008
+    400056: IK Chain009
+    400058: IK Chain010
+    400060: IK Chain011
+    400062: IK Chain012
+    400064: IK Chain013
+    400066: IK Chain014
+    400068: IK Chain015
+    400070: IK Chain016
+    400072: leg_004
+    400074: leg_006
+    400076: leg_008
+    400078: leg_009
+    400080: leg_01
+    400082: leg_010
+    400084: leg_011
+    400086: leg_012
+    400088: leg_B_01
+    400090: leg_B_01(mirrored)
+    400092: leg_B_02
+    400094: leg_B_02(mirrored)
+    400096: leg_B_03
+    400098: leg_B_03(mirrored)
+    400100: leg_B_04
+    400102: leg_B_04(mirrored)
+    400104: leg_B_05
+    400106: leg_B_05(mirrored)
+    400108: leg_B_06
+    400110: leg_B_06(mirrored)
+    400112: leg_B_controller
+    400114: leg_B_controller001
+    400116: leg_B_end
+    400118: leg_BB02
+    400120: leg_BB02(mirrored)
+    400122: leg_BB_01
+    400124: leg_BB_01(mirrored)
+    400126: leg_BB_03
+    400128: leg_BB_03(mirrored)
+    400130: leg_BB_04
+    400132: leg_BB_04(mirrored)
+    400134: leg_BB_05
+    400136: leg_BB_05(mirrored)
+    400138: leg_BB_06
+    400140: leg_BB_06(mirrored)
+    400142: leg_BB_controller
+    400144: leg_BB_controller001
+    400146: leg_BB_end
+    400148: leg_F_007
+    400150: leg_F_007(mirrored)
+    400152: leg_F_008
+    400154: leg_F_008(mirrored)
+    400156: leg_F_009
+    400158: leg_F_009(mirrored)
+    400160: leg_F_01
+    400162: leg_F_01(mirrored)
+    400164: leg_F_010
+    400166: leg_F_010(mirrored)
+    400168: leg_F_011
+    400170: leg_F_011(mirrored)
+    400172: leg_F_012
+    400174: leg_F_012(mirrored)
+    400176: leg_F_02
+    400178: leg_F_02(mirrored)
+    400180: leg_F_03
+    400182: leg_F_03(mirrored)
+    400184: leg_F_04
+    400186: leg_F_04(mirrored)
+    400188: leg_F_05
+    400190: leg_F_05(mirrored)
+    400192: leg_F_06
+    400194: leg_F_06(mirrored)
+    400196: leg_f_controller
+    400198: leg_f_controller001
+    400200: leg_F_end
+    400202: leg_F_end001
+    400204: leg_FF_controller
+    400206: leg_FF_controller001
+    400208: spider
+    400210: //RootNode
+    400212: torace_bone
+    400214: torace_end_bone
+    4300000: spider
+    4300002: big_eye_L
+    4300004: big_eye_R
+    4300006: eye_R_01
+    4300008: eye_R_02
+    4300010: eye_L01
+    4300012: eye_L01
+    4300014: eye_R_03
+    4300016: eye_R_03
+    4300018: Cylinder001
+    4300020: Cylinder003
+    4300022: leg_01
+    4300024: leg_004
+    4300026: leg_006
+    4300028: leg_008
+    4300030: leg_009
+    4300032: leg_010
+    4300034: leg_011
+    4300036: leg_012
+    7400000: Fall
+    9500000: //RootNode
+    13700000: big_eye_L
+    13700002: big_eye_R
+    13700004: Cylinder001
+    13700006: Cylinder003
+    13700008: eye_L01
+    13700010: eye_L01 1
+    13700012: eye_R_01
+    13700014: eye_R_02
+    13700016: eye_R_03
+    13700018: eye_R_03 1
+    13700020: leg_004
+    13700022: leg_006
+    13700024: leg_008
+    13700026: leg_009
+    13700028: leg_01
+    13700030: leg_010
+    13700032: leg_011
+    13700034: leg_012
+    13700036: spider
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Fall
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 25
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: big_eye_L
+        weight: 1
+      - path: big_eye_R
+        weight: 1
+      - path: Cylinder001
+        weight: 1
+      - path: Cylinder003
+        weight: 1
+      - path: eye_L01
+        weight: 1
+      - path: eye_L01 1
+        weight: 1
+      - path: eye_R_01
+        weight: 1
+      - path: eye_R_02
+        weight: 1
+      - path: eye_R_03
+        weight: 1
+      - path: eye_R_03 1
+        weight: 1
+      - path: IK Chain002
+        weight: 1
+      - path: IK Chain004
+        weight: 1
+      - path: IK Chain006
+        weight: 1
+      - path: IK Chain008
+        weight: 1
+      - path: IK Chain013
+        weight: 1
+      - path: IK Chain014
+        weight: 1
+      - path: IK Chain015
+        weight: 1
+      - path: IK Chain016
+        weight: 1
+      - path: leg_01
+        weight: 1
+      - path: leg_004
+        weight: 1
+      - path: leg_006
+        weight: 1
+      - path: leg_008
+        weight: 1
+      - path: leg_009
+        weight: 1
+      - path: leg_010
+        weight: 1
+      - path: leg_011
+        weight: 1
+      - path: leg_012
+        weight: 1
+      - path: leg_B_controller
+        weight: 1
+      - path: leg_B_controller/IK Chain003
+        weight: 1
+      - path: leg_B_controller001
+        weight: 1
+      - path: leg_B_controller001/IK Chain011
+        weight: 1
+      - path: leg_BB_controller
+        weight: 1
+      - path: leg_BB_controller/IK Chain001
+        weight: 1
+      - path: leg_BB_controller001
+        weight: 1
+      - path: leg_BB_controller001/IK Chain012
+        weight: 1
+      - path: leg_f_controller
+        weight: 1
+      - path: leg_f_controller/IK Chain005
+        weight: 1
+      - path: leg_f_controller001
+        weight: 1
+      - path: leg_f_controller001/IK Chain010
+        weight: 1
+      - path: leg_FF_controller
+        weight: 1
+      - path: leg_FF_controller/IK Chain007
+        weight: 1
+      - path: leg_FF_controller001
+        weight: 1
+      - path: leg_FF_controller001/IK Chain009
+        weight: 1
+      - path: spider
+        weight: 1
+      - path: torace_bone
+        weight: 1
+      - path: torace_bone/addome_bone
+        weight: 1
+      - path: torace_bone/addome_bone/addome_end_bone
+        weight: 1
+      - path: torace_bone/chela_L_bone
+        weight: 1
+      - path: torace_bone/chela_L_bone/chela_L_end_bone
+        weight: 1
+      - path: torace_bone/chela_R_bone
+        weight: 1
+      - path: torace_bone/chela_R_bone/chela_R_bone 1
+        weight: 1
+      - path: torace_bone/leg_B_01
+        weight: 1
+      - path: torace_bone/leg_B_01/leg_B_02
+        weight: 1
+      - path: torace_bone/leg_B_01/leg_B_02/leg_B_03
+        weight: 1
+      - path: torace_bone/leg_B_01/leg_B_02/leg_B_03/leg_B_04
+        weight: 1
+      - path: torace_bone/leg_B_01/leg_B_02/leg_B_03/leg_B_04/leg_B_05
+        weight: 1
+      - path: torace_bone/leg_B_01/leg_B_02/leg_B_03/leg_B_04/leg_B_05/leg_B_06
+        weight: 1
+      - path: torace_bone/leg_B_01/leg_B_02/leg_B_03/leg_B_04/leg_B_05/leg_B_06/leg_B_end
+        weight: 1
+      - path: torace_bone/leg_B_01(mirrored)
+        weight: 1
+      - path: torace_bone/leg_B_01(mirrored)/leg_B_02(mirrored)
+        weight: 1
+      - path: torace_bone/leg_B_01(mirrored)/leg_B_02(mirrored)/leg_B_03(mirrored)
+        weight: 1
+      - path: torace_bone/leg_B_01(mirrored)/leg_B_02(mirrored)/leg_B_03(mirrored)/leg_B_04(mirrored)
+        weight: 1
+      - path: torace_bone/leg_B_01(mirrored)/leg_B_02(mirrored)/leg_B_03(mirrored)/leg_B_04(mirrored)/leg_B_05(mirrored)
+        weight: 1
+      - path: torace_bone/leg_B_01(mirrored)/leg_B_02(mirrored)/leg_B_03(mirrored)/leg_B_04(mirrored)/leg_B_05(mirrored)/leg_B_06(mirrored)
+        weight: 1
+      - path: torace_bone/leg_B_01(mirrored)/leg_B_02(mirrored)/leg_B_03(mirrored)/leg_B_04(mirrored)/leg_B_05(mirrored)/leg_B_06(mirrored)/Bone001
+        weight: 1
+      - path: torace_bone/leg_BB_01
+        weight: 1
+      - path: torace_bone/leg_BB_01/leg_BB02
+        weight: 1
+      - path: torace_bone/leg_BB_01/leg_BB02/leg_BB_03
+        weight: 1
+      - path: torace_bone/leg_BB_01/leg_BB02/leg_BB_03/leg_BB_04
+        weight: 1
+      - path: torace_bone/leg_BB_01/leg_BB02/leg_BB_03/leg_BB_04/leg_BB_05
+        weight: 1
+      - path: torace_bone/leg_BB_01/leg_BB02/leg_BB_03/leg_BB_04/leg_BB_05/leg_BB_06
+        weight: 1
+      - path: torace_bone/leg_BB_01/leg_BB02/leg_BB_03/leg_BB_04/leg_BB_05/leg_BB_06/leg_BB_end
+        weight: 1
+      - path: torace_bone/leg_BB_01(mirrored)
+        weight: 1
+      - path: torace_bone/leg_BB_01(mirrored)/leg_BB02(mirrored)
+        weight: 1
+      - path: torace_bone/leg_BB_01(mirrored)/leg_BB02(mirrored)/leg_BB_03(mirrored)
+        weight: 1
+      - path: torace_bone/leg_BB_01(mirrored)/leg_BB02(mirrored)/leg_BB_03(mirrored)/leg_BB_04(mirrored)
+        weight: 1
+      - path: torace_bone/leg_BB_01(mirrored)/leg_BB02(mirrored)/leg_BB_03(mirrored)/leg_BB_04(mirrored)/leg_BB_05(mirrored)
+        weight: 1
+      - path: torace_bone/leg_BB_01(mirrored)/leg_BB02(mirrored)/leg_BB_03(mirrored)/leg_BB_04(mirrored)/leg_BB_05(mirrored)/leg_BB_06(mirrored)
+        weight: 1
+      - path: torace_bone/leg_BB_01(mirrored)/leg_BB02(mirrored)/leg_BB_03(mirrored)/leg_BB_04(mirrored)/leg_BB_05(mirrored)/leg_BB_06(mirrored)/Bone002
+        weight: 1
+      - path: torace_bone/leg_F_01
+        weight: 1
+      - path: torace_bone/leg_F_01/leg_F_02
+        weight: 1
+      - path: torace_bone/leg_F_01/leg_F_02/leg_F_03
+        weight: 1
+      - path: torace_bone/leg_F_01/leg_F_02/leg_F_03/leg_F_04
+        weight: 1
+      - path: torace_bone/leg_F_01/leg_F_02/leg_F_03/leg_F_04/leg_F_05
+        weight: 1
+      - path: torace_bone/leg_F_01/leg_F_02/leg_F_03/leg_F_04/leg_F_05/leg_F_06
+        weight: 1
+      - path: torace_bone/leg_F_01/leg_F_02/leg_F_03/leg_F_04/leg_F_05/leg_F_06/leg_F_end
+        weight: 1
+      - path: torace_bone/leg_F_01(mirrored)
+        weight: 1
+      - path: torace_bone/leg_F_01(mirrored)/leg_F_02(mirrored)
+        weight: 1
+      - path: torace_bone/leg_F_01(mirrored)/leg_F_02(mirrored)/leg_F_03(mirrored)
+        weight: 1
+      - path: torace_bone/leg_F_01(mirrored)/leg_F_02(mirrored)/leg_F_03(mirrored)/leg_F_04(mirrored)
+        weight: 1
+      - path: torace_bone/leg_F_01(mirrored)/leg_F_02(mirrored)/leg_F_03(mirrored)/leg_F_04(mirrored)/leg_F_05(mirrored)
+        weight: 1
+      - path: torace_bone/leg_F_01(mirrored)/leg_F_02(mirrored)/leg_F_03(mirrored)/leg_F_04(mirrored)/leg_F_05(mirrored)/leg_F_06(mirrored)
+        weight: 1
+      - path: torace_bone/leg_F_01(mirrored)/leg_F_02(mirrored)/leg_F_03(mirrored)/leg_F_04(mirrored)/leg_F_05(mirrored)/leg_F_06(mirrored)/Bone003
+        weight: 1
+      - path: torace_bone/leg_F_007
+        weight: 1
+      - path: torace_bone/leg_F_007/leg_F_008
+        weight: 1
+      - path: torace_bone/leg_F_007/leg_F_008/leg_F_009
+        weight: 1
+      - path: torace_bone/leg_F_007/leg_F_008/leg_F_009/leg_F_010
+        weight: 1
+      - path: torace_bone/leg_F_007/leg_F_008/leg_F_009/leg_F_010/leg_F_011
+        weight: 1
+      - path: torace_bone/leg_F_007/leg_F_008/leg_F_009/leg_F_010/leg_F_011/leg_F_012
+        weight: 1
+      - path: torace_bone/leg_F_007/leg_F_008/leg_F_009/leg_F_010/leg_F_011/leg_F_012/leg_F_end001
+        weight: 1
+      - path: torace_bone/leg_F_007(mirrored)
+        weight: 1
+      - path: torace_bone/leg_F_007(mirrored)/leg_F_008(mirrored)
+        weight: 1
+      - path: torace_bone/leg_F_007(mirrored)/leg_F_008(mirrored)/leg_F_009(mirrored)
+        weight: 1
+      - path: torace_bone/leg_F_007(mirrored)/leg_F_008(mirrored)/leg_F_009(mirrored)/leg_F_010(mirrored)
+        weight: 1
+      - path: torace_bone/leg_F_007(mirrored)/leg_F_008(mirrored)/leg_F_009(mirrored)/leg_F_010(mirrored)/leg_F_011(mirrored)
+        weight: 1
+      - path: torace_bone/leg_F_007(mirrored)/leg_F_008(mirrored)/leg_F_009(mirrored)/leg_F_010(mirrored)/leg_F_011(mirrored)/leg_F_012(mirrored)
+        weight: 1
+      - path: torace_bone/leg_F_007(mirrored)/leg_F_008(mirrored)/leg_F_009(mirrored)/leg_F_010(mirrored)/leg_F_011(mirrored)/leg_F_012(mirrored)/Bone004
+        weight: 1
+      - path: torace_bone/torace_end_bone
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
