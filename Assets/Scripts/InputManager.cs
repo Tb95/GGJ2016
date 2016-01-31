@@ -197,7 +197,7 @@ public class InputManager : MonoBehaviour
 
 	void UpdateSequence()
 	{
-        if (!dPadPressed && Input.GetAxis("DPadY1") < -0.5f)
+        if (!dPadPressed && Input.GetAxis("DPadY" + playerNumber) < -0.5f)
         {
             dPadPressed = true;
             Debug.Log("down");
@@ -207,7 +207,7 @@ public class InputManager : MonoBehaviour
             buttonTime.timeFromStart = Time.realtimeSinceStartup;
             buttonTimeSequence.prepend(buttonTime);
         }
-        else if (!dPadPressed && Input.GetAxis("DPadY1") > 0.5f)
+        else if (!dPadPressed && Input.GetAxis("DPadY" + playerNumber) > 0.5f)
         {
             dPadPressed = true;
             Debug.Log("up");
@@ -217,7 +217,7 @@ public class InputManager : MonoBehaviour
             buttonTime.timeFromStart = Time.realtimeSinceStartup;
             buttonTimeSequence.prepend(buttonTime);
         }
-        else if (!dPadPressed && Input.GetAxis("DPadX1") > 0.5f)
+        else if (!dPadPressed && Input.GetAxis("DPadX" + playerNumber) > 0.5f)
         {
             dPadPressed = true;
             Debug.Log("right");
@@ -227,7 +227,7 @@ public class InputManager : MonoBehaviour
             buttonTime.timeFromStart = Time.realtimeSinceStartup;
             buttonTimeSequence.prepend(buttonTime);
         }
-        else if (!dPadPressed && Input.GetAxis("DPadX1") < -0.5f)
+        else if (!dPadPressed && Input.GetAxis("DPadX" + playerNumber) < -0.5f)
         {
             dPadPressed = true;
             Debug.Log("left");
@@ -237,7 +237,7 @@ public class InputManager : MonoBehaviour
             buttonTime.timeFromStart = Time.realtimeSinceStartup;
             buttonTimeSequence.prepend(buttonTime);
         }
-        else if (Mathf.Abs(Input.GetAxis("DPadY1")) < 0.3f && Mathf.Abs(Input.GetAxis("DPadX1")) < 0.3f)
+        else if (Mathf.Abs(Input.GetAxis("DPadY" + playerNumber)) < 0.3f && Mathf.Abs(Input.GetAxis("DPadX" + playerNumber)) < 0.3f)
             dPadPressed = false;
 
 		if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(buttons[3])) {
@@ -282,7 +282,8 @@ public class InputManager : MonoBehaviour
 	void CheckSequences()
 	{
 		for (int i = 0; i < possibleSpiderCombos.Count; i++) {
-			if (buttonTimeSequence.isSequenceOK(possibleSpiderCombos[i], 3.0f, gameObject)) {
+            if (buttonTimeSequence.isSequenceOK(possibleSpiderCombos[i], 0.5f * possibleSpiderCombos[i].buttonsList.Count, gameObject))
+            {
 				// SPIDER EXPLOSION!!!
                 possibleSpiderCombos[i].spider.GetSpawner().DeadEnemy();
 
@@ -310,4 +311,9 @@ public class InputManager : MonoBehaviour
 		else
 			return Side.Right;
 	}
+
+    public bool isLegalHit(Side spiderSide)
+    {
+        return currentSidePosition == spiderSide;
+    }
 }

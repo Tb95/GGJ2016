@@ -26,6 +26,8 @@ public class ButtonTimeSequence {
 			return false;
 		if (Vector3.Distance (player.transform.position, spiderCombo.spider.transform.position) > spiderCombo.spider.radiusForAttack) // Se non sono vicino al ragno
 			return false;
+        if (!player.GetComponent<InputManager>().isLegalHit(spiderCombo.spider.side)) // Se cerco di combare sul lato sbagliato della mappa
+            return false;
 		
 		bool isOK = true;
 		for (int i = 0; i < spiderCombo.buttonsList.Count; i++) {

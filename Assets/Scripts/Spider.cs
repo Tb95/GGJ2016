@@ -48,6 +48,9 @@ public class Spider : MonoBehaviour {
     public GameObject comboTextPlayer2;
 	GameObject spiderTrail;
 	public GameObject trail;
+    //LEFT/RIGHT
+    public Material lightMaterial;
+    public Material darkMaterial;
 
 	// Use this for initialization
 	void Start () {
@@ -59,6 +62,23 @@ public class Spider : MonoBehaviour {
         player = players[Random.Range(0, players.Length)];
 
 		side = player.GetComponent<InputManager> ().getRandomSide ();
+        switch (side)
+        {
+            case InputManager.Side.Left:
+                foreach (var item in GetComponentsInChildren<Renderer>())
+                {
+                    item.sharedMaterial = darkMaterial;
+                }
+                break;
+
+            case InputManager.Side.Right:
+                foreach (var item in GetComponentsInChildren<Renderer>())
+                {
+                    item.sharedMaterial = lightMaterial;
+                }
+                break;
+        }
+
 		buttonsManager = GameObject.FindGameObjectWithTag ("ButtonsManager").GetComponent<ButtonsManager>();
 		comboList = buttonsManager.getRandomCombo(comboLength, side);
 		spiderCombo = new SpiderCombo (comboList, this);
@@ -255,6 +275,9 @@ public class Spider : MonoBehaviour {
     public List<GameObject> butsPlayer1 = new List<GameObject>();
     public List<GameObject> butsPlayer2 = new List<GameObject>();
 	public void Hit(int damage, GameObject playerThatHit) {
+        if (!playerThatHit.GetComponent<InputManager>().isLegalHit(side))
+            return;
+
 		health -= damage;
 
 		if (health <= 0) {
