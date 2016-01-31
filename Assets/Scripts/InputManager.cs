@@ -13,7 +13,7 @@ public class InputManager : MonoBehaviour
         Right
     }
     public float twoHandsCooldown;
-    [Range(1, 4)]
+    [Range(1, 2)]
     public int playerNumber;
     
     Side _currentSideButton;
@@ -40,6 +40,7 @@ public class InputManager : MonoBehaviour
     Openpause pause;
     float nextTwoHands;
     KeyCode[] buttons;
+    bool dPadPressed;
 
     void Start()
     {
@@ -64,15 +65,17 @@ public class InputManager : MonoBehaviour
         }
         else if (playerNumber == 2)
         {
-            buttons[0] = KeyCode.Joystick4Button0;
-            buttons[1] = KeyCode.Joystick4Button1;
-            buttons[2] = KeyCode.Joystick4Button2;
-            buttons[3] = KeyCode.Joystick4Button3;
-            buttons[4] = KeyCode.Joystick4Button4;
-            buttons[5] = KeyCode.Joystick4Button5;
-            buttons[6] = KeyCode.Joystick4Button6;
-            buttons[7] = KeyCode.Joystick4Button7;
+            buttons[0] = KeyCode.Joystick2Button0;
+            buttons[1] = KeyCode.Joystick2Button1;
+            buttons[2] = KeyCode.Joystick2Button2;
+            buttons[3] = KeyCode.Joystick2Button3;
+            buttons[4] = KeyCode.Joystick2Button4;
+            buttons[5] = KeyCode.Joystick2Button5;
+            buttons[6] = KeyCode.Joystick2Button6;
+            buttons[7] = KeyCode.Joystick2Button7;
         }
+
+        dPadPressed = false;
     }
 
     void Update()
@@ -194,37 +197,55 @@ public class InputManager : MonoBehaviour
 
 	void UpdateSequence()
 	{
-		/*
-		if (Input.GetButtonDown ("up") && currentSidePosition == Side.Right) {
-			Debug.Log ("up");
+        if (!dPadPressed && Input.GetAxis("DPadY" + playerNumber) < -0.5f)
+        {
+            dPadPressed = true;
+            Debug.Log("down");
 
-			ButtonTime buttonTime;
-			buttonTime.button = upButton;
-			buttonTime.timeFromStart = Time.time;
-			buttonTimeSequence.prepend(buttonTime);
-		} else if (Input.GetButtonDown ("down") && currentSidePosition == Side.Right) {
-			Debug.Log ("down");
-		} else if (Input.GetButtonDown ("left") && currentSidePosition == Side.Right) {
-			Debug.Log ("left");
-		} else if (Input.GetButtonDown ("right") && currentSidePosition == Side.Right) {
-			Debug.Log ("right");
-		}
+            ButtonTimeSequence.ButtonTime buttonTime;
+            buttonTime.button = ButtonsManager.Button.downButton;
+            buttonTime.timeFromStart = Time.realtimeSinceStartup;
+            buttonTimeSequence.prepend(buttonTime);
+        }
+        else if (!dPadPressed && Input.GetAxis("DPadY" + playerNumber) > 0.5f)
+        {
+            dPadPressed = true;
+            Debug.Log("up");
 
-		if (Input.GetButtonDown ("joystick button 0") && currentSidePosition == Side.Left) {
-			Debug.Log ("Button 0");
-		} else if (Input.GetButtonDown ("joystick button 1") && currentSidePosition == Side.Left) {
-			Debug.Log ("Button 1");
-		} else if (Input.GetButtonDown ("joystick button 2") && currentSidePosition == Side.Left) {
-			Debug.Log ("Button 2");
-		} else if (Input.GetButtonDown ("joystick button 3") && currentSidePosition == Side.Left) {
-			Debug.Log ("Button 3");
-		}*/
+            ButtonTimeSequence.ButtonTime buttonTime;
+            buttonTime.button = ButtonsManager.Button.upButton;
+            buttonTime.timeFromStart = Time.realtimeSinceStartup;
+            buttonTimeSequence.prepend(buttonTime);
+        }
+        else if (!dPadPressed && Input.GetAxis("DPadX" + playerNumber) > 0.5f)
+        {
+            dPadPressed = true;
+            Debug.Log("right");
+
+            ButtonTimeSequence.ButtonTime buttonTime;
+            buttonTime.button = ButtonsManager.Button.rightButton;
+            buttonTime.timeFromStart = Time.realtimeSinceStartup;
+            buttonTimeSequence.prepend(buttonTime);
+        }
+        else if (!dPadPressed && Input.GetAxis("DPadX" + playerNumber) < -0.5f)
+        {
+            dPadPressed = true;
+            Debug.Log("left");
+
+            ButtonTimeSequence.ButtonTime buttonTime;
+            buttonTime.button = ButtonsManager.Button.leftButton;
+            buttonTime.timeFromStart = Time.realtimeSinceStartup;
+            buttonTimeSequence.prepend(buttonTime);
+        }
+        else if (Mathf.Abs(Input.GetAxis("DPadY" + playerNumber)) < 0.3f && Mathf.Abs(Input.GetAxis("DPadX" + playerNumber)) < 0.3f)
+            dPadPressed = false;
+
 		if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(buttons[3])) {
 			Debug.Log("yellow");
 
 			ButtonTimeSequence.ButtonTime buttonTime;
 			buttonTime.button = ButtonsManager.Button.yellowButton;
-			buttonTime.timeFromStart = Time.time;
+			buttonTime.timeFromStart = Time.realtimeSinceStartup;
 			buttonTimeSequence.prepend(buttonTime);
         }
         else if (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(buttons[1]))
@@ -233,7 +254,7 @@ public class InputManager : MonoBehaviour
 
 			ButtonTimeSequence.ButtonTime buttonTime;
 			buttonTime.button = ButtonsManager.Button.redButton;
-			buttonTime.timeFromStart = Time.time;
+            buttonTime.timeFromStart = Time.realtimeSinceStartup;
 			buttonTimeSequence.prepend(buttonTime);
         }
         else if (Input.GetKeyDown(KeyCode.C) || Input.GetKeyDown(buttons[0]))
@@ -242,7 +263,7 @@ public class InputManager : MonoBehaviour
 
 			ButtonTimeSequence.ButtonTime buttonTime;
 			buttonTime.button = ButtonsManager.Button.greenButton;
-			buttonTime.timeFromStart = Time.time;
+            buttonTime.timeFromStart = Time.realtimeSinceStartup;
 			buttonTimeSequence.prepend(buttonTime);
         }
         else if (Input.GetKeyDown(KeyCode.V) || Input.GetKeyDown(buttons[2]))
@@ -251,36 +272,56 @@ public class InputManager : MonoBehaviour
 
 			ButtonTimeSequence.ButtonTime buttonTime;
 			buttonTime.button = ButtonsManager.Button.blueButton;
-			buttonTime.timeFromStart = Time.time;
+            buttonTime.timeFromStart = Time.realtimeSinceStartup;
 			buttonTimeSequence.prepend(buttonTime);
 		}
 	}
 
-	public List<SpiderCombo> possibleSpiderCombos = new List<SpiderCombo>();
+	public static List<SpiderCombo> possibleSpiderCombos = new List<SpiderCombo>();
 
 	void CheckSequences()
 	{
 		for (int i = 0; i < possibleSpiderCombos.Count; i++) {
-			if (buttonTimeSequence.isSequenceOK(possibleSpiderCombos[i], 3.0f)) {
+            if (buttonTimeSequence.isSequenceOK(possibleSpiderCombos[i], 0.5f * possibleSpiderCombos[i].buttonsList.Count, gameObject))
+            {
 				// SPIDER EXPLOSION!!!
-                		possibleSpiderCombos[i].spider.GetSpawner().DeadEnemy();
-				// Togli la combo
-				var children = new List<GameObject>();
-				foreach (Transform child in possibleSpiderCombos [i].spider.comboText.transform) children.Add(child.gameObject);
-				children.ForEach(child => Destroy(child));
-				possibleSpiderCombos [i].spider.comboText.SetActive (false);
+                possibleSpiderCombos[i].spider.GetSpawner().DeadEnemy();
+
+				// Togli la combo e il trail renderer
+				Destroy(possibleSpiderCombos[i].spider.trail.gameObject);
+				for (int c = 0; c < possibleSpiderCombos[i].spider.butsPlayer1.Count; c++) {
+					Destroy (possibleSpiderCombos[i].spider.butsPlayer1 [c]);
+				}
+                for (int c = 0; c < possibleSpiderCombos[i].spider.butsPlayer2.Count; c++)
+                {
+                    Destroy(possibleSpiderCombos[i].spider.butsPlayer2[c]);
+                }
+
 				Destroy (possibleSpiderCombos [i].spider.gameObject);
-                GetComponent<Health>().DeadEnemy(true);
+                GetComponent<Health>().DeadEnemy(true, possibleSpiderCombos[i].spider.health);
 				possibleSpiderCombos.Remove (possibleSpiderCombos [i]);
 				buttonTimeSequence.resetSequence();
 			}
 		}
 	}
 
-	public Side getRandomSide() {
-		if (Random.Range (0, 2) == 0)
-			return Side.Left;
-		else
-			return Side.Right;
+    static int leftSpawned = 0;
+    static int rightSpawned = 0;
+	public static Side getRandomSide() {
+        if (Random.Range(0, 100) > leftSpawned / (float)(leftSpawned + rightSpawned) * 100)
+        {
+            leftSpawned++;
+            return Side.Left;
+        }
+        else
+        {
+            rightSpawned++;
+            return Side.Right;
+        }
 	}
+
+    public bool isLegalHit(Side spiderSide)
+    {
+        return currentSidePosition == spiderSide;
+    }
 }

@@ -18,23 +18,26 @@ public class ButtonTimeSequence {
 		}
 	}
 
-	public bool isSequenceOK(SpiderCombo spiderCombo, float minDeltaT) {
+	public bool isSequenceOK(SpiderCombo spiderCombo, float minDeltaT, GameObject player) {
 		// CONTROLLI INIZIALI
 		if (buttonTimeList.Count < spiderCombo.buttonsList.Count) // Se non ho fatto abbastanza mosse
 			return false;
 		if (!spiderCombo.spider.isDown) // Se il ragno non è girato
 			return false;
-		if (Vector3.Distance (spiderCombo.spider.player.transform.position, spiderCombo.spider.transform.position) > spiderCombo.spider.radiusForAttack) // Se non sono vicino al ragno
+		if (Vector3.Distance (player.transform.position, spiderCombo.spider.transform.position) > spiderCombo.spider.radiusForAttack) // Se non sono vicino al ragno
 			return false;
+        if (!player.GetComponent<InputManager>().isLegalHit(spiderCombo.spider.side)) // Se cerco di combare sul lato sbagliato della mappa
+            return false;
 		
 		bool isOK = true;
 		for (int i = 0; i < spiderCombo.buttonsList.Count; i++) {
 			if (buttonTimeList [i].button != spiderCombo.buttonsList [spiderCombo.buttonsList.Count - 1 - i]) {
+                Debug.Log(isOK);
 				isOK = false;
 			}
 		}
 			
-		if ((buttonTimeList [0].timeFromStart - buttonTimeList [spiderCombo.buttonsList.Count - 1].timeFromStart) > minDeltaT) {
+		if ((Time.realtimeSinceStartup - buttonTimeList [spiderCombo.buttonsList.Count - 1].timeFromStart) > minDeltaT) {
 			isOK = false;
 		}
 
