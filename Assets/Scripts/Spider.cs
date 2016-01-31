@@ -61,7 +61,7 @@ public class Spider : MonoBehaviour {
 		var players = GameObject.FindGameObjectsWithTag("Player");
         player = players[Random.Range(0, players.Length)];
 
-		side = player.GetComponent<InputManager> ().getRandomSide ();
+		side = InputManager.getRandomSide ();
         switch (side)
         {
             case InputManager.Side.Left:
@@ -89,6 +89,8 @@ public class Spider : MonoBehaviour {
 		// Play fall sound
 		gameObject.GetComponent<AudioSource>().clip = spiderFall;
         gameObject.GetComponent<AudioSource>().PlayScheduled(2);
+
+        myMovement = movement;
 	}
 	
 	// Update is called once per frame
@@ -105,7 +107,7 @@ public class Spider : MonoBehaviour {
                 // If dist < 0.3 : do nothing
                 // If 0.3 < dist < 2 : just chase
                 // If 2 < dist : perform movement
-                if (dist >= doNothingTriggerDistance && dist <= chaseTriggerDistance)
+                if (movement != Movement.idle && dist <= chaseTriggerDistance)
                 {
                     chase(player);
                 }
@@ -117,6 +119,10 @@ public class Spider : MonoBehaviour {
                         chaseZigZag(player);
                     else if (movement == Movement.chaseArchs)
                         chaseArchs(player);
+                }
+                else if (dist > 5 * radiusForAttack)
+                {
+                    movement = myMovement;
                 }
             }
         }
@@ -253,25 +259,40 @@ public class Spider : MonoBehaviour {
 	}
 
 	float lastAttackTime = 0;
-	public float attackEveryTotSeconds = 0.5f;
+    public float attackEveryTotSeconds = 0.5f;
+    Movement myMovement;
 	void OnCollisionEnter(Collision other) {
 		if (other.gameObject.tag == "Player" && (Time.time - lastAttackTime) > attackEveryTotSeconds) {
 			other.gameObject.GetComponent<Player> ().Hit (1);
-			lastAttackTime = Time.time;
+            lastAttackTime = Time.time;
+
+            movement = Movement.idle;
 		}
 	}
 
 	void OnCollisionStay(Collision other) {
 		if (other.gameObject.tag == "Player" && (Time.time - lastAttackTime) > attackEveryTotSeconds) {
-			other.gameObject.GetComponent<Player> ().Hit (1);
+            other.gameObject.GetComponent<Player>().Hit(1);
+
+            movement = Movement.idle;
 
 			// Play sound
 			gameObject.GetComponent<AudioSource>().clip = spiderCatch;
 			gameObject.GetComponent<AudioSource> ().Play ();
 
 			lastAttackTime = Time.time;
+
+            
 		}
 	}
+
+    void OnCollisionExit(Collision other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            movement = myMovement;
+        }
+    }
 
 	float timeOfGettingDown = 0;
     public List<GameObject> butsPlayer1 = new List<GameObject>();
@@ -289,7 +310,7 @@ public class Spider : MonoBehaviour {
 			player.GetComponent<AudioSource>().clip = spiderKill;
 			player.GetComponent<AudioSource> ().Play ();
 
-            playerThatHit.GetComponent<Health>().DeadEnemy(false);
+            playerThatHit.GetComponent<Health>().DeadEnemy(false, health);
             spawner.DeadEnemy();
 			Destroy (gameObject);
 		} else if (health % resistance == 0) {

@@ -56,9 +56,9 @@ public class Health : MonoBehaviour
         }
     }
 
-    public void DeadEnemy(bool withCombo)
+    public void DeadEnemy(bool withCombo, int remainingHealth)
     {
         int previousPoints = int.Parse(points.text);
-        points.text = (previousPoints + (withCombo ? 3 : 1)).ToString();
+        points.text = (previousPoints + (withCombo ? remainingHealth : 1)).ToString();
     }
 }
