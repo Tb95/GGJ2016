@@ -97,43 +97,20 @@ public class Spider : MonoBehaviour {
         // MANAGE IS DOWN
         else
         {
-			// Tengo attivo il combo text
-			comboText.SetActive(true);
-
 			// 1 - Mostra combo e trail se è quello down più vicino
 			List<SpiderCombo> sc = player.GetComponent<InputManager> ().possibleSpiderCombos.FindAll(aSc => aSc.spider.isDown);
 			sc.Sort((c1, c2) => (int)Vector3.Distance(player.transform.position, c1.spider.transform.position) - (int)Vector3.Distance(player.transform.position, c2.spider.transform.position));
-			if (sc [0].spider == this && trail == null) {
-				// Create trail renderer
-				trail = Instantiate (spiderTrail);
-				trail.transform.position = transform.position + transform.right * 2.0f;
-				trail.GetComponent<RotateAround> ().target = gameObject.transform;
-				trail.GetComponent<RotateAround> ().vec = gameObject.transform.up;
+			if (sc [0].spider == this) {
 				trail.SetActive (true);
-
-				// Show combo label
-				comboText.SetActive (true);
-				List<GameObject> buts = new List<GameObject> ();
-				int distanceBetweenButtons = 50;
-				for (int i = 0; i < spiderCombo.buttonsList.Count; i++) {
-					ButtonsManager.Button b = spiderCombo.buttonsList [i];
-					buts.Add (buttonsManager.getGameObjectFromButton (b));
-				}
 				for (int i = 0; i < buts.Count; i++) {
-					buts [i].transform.parent = comboText.transform;
-					buts [i].transform.position = comboText.transform.position - comboText.transform.up * (i + 1) * distanceBetweenButtons;
 					buts [i].SetActive (true);
 				}
-			} else if (sc[0].spider != this && trail != null) {
-				//Destroy trail
-				if (trail != null)
-					Destroy(trail.gameObject);
+			} else {
+				trail.SetActive (false);
 
-				//Destroy combo buttons
-				/*foreach (Transform child in comboText.transform)
-				{
-					Destroy(child.gameObject);
-				}*/
+				for (int i = 0; i < buts.Count; i++) {
+					buts [i].SetActive (false);
+				}
 			}
 
             // 2 - Dopo tot tempo torna not down
@@ -148,15 +125,12 @@ public class Spider : MonoBehaviour {
                 animator.SetTrigger("Turn");
 
                 //Destroy trail
-				if (trail != null)
-					Destroy(trail.gameObject);
+				Destroy(trail.gameObject);
 
                 //Destroy combo buttons
-                foreach (Transform child in comboText.transform)
-                {
-                    Destroy(child.gameObject);
-                }
-                comboText.SetActive(false);
+				for (int i = 0; i < buts.Count; i++) {
+					Destroy (buts [i]);
+				}
             }
         }
 	}
@@ -230,6 +204,7 @@ public class Spider : MonoBehaviour {
 	}
 
 	float timeOfGettingDown = 0;
+	List<GameObject> buts;
 	public void Hit(int damage, GameObject playerThatHit) {
 		health -= damage;
 		if (health <= 0) {
@@ -245,6 +220,24 @@ public class Spider : MonoBehaviour {
 		} else {
 			isDown = true;
 			timeOfGettingDown = Time.time;
+
+			// Create trail renderer
+			trail = Instantiate (spiderTrail);
+			trail.transform.position = transform.position + transform.right * 2.0f;
+			trail.GetComponent<RotateAround> ().target = gameObject.transform;
+			trail.GetComponent<RotateAround> ().vec = gameObject.transform.up;
+
+			// Show combo label
+			buts = new List<GameObject> ();
+			int distanceBetweenButtons = 50;
+			for (int i = 0; i < spiderCombo.buttonsList.Count; i++) {
+				ButtonsManager.Button b = spiderCombo.buttonsList [i];
+				buts.Add (buttonsManager.getGameObjectFromButton (b));
+			}
+			for (int i = 0; i < buts.Count; i++) {
+				buts [i].transform.parent = comboText.transform;
+				buts [i].transform.position = comboText.transform.position - comboText.transform.up * (i + 1) * distanceBetweenButtons;
+			}
 
 			// Play sound
 			gameObject.GetComponent<AudioSource>().clip = flippinSpider;
