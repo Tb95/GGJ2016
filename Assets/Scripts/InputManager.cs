@@ -13,7 +13,7 @@ public class InputManager : MonoBehaviour
         Right
     }
     public float twoHandsCooldown;
-    [Range(1, 4)]
+    [Range(1, 2)]
     public int playerNumber;
     
     Side _currentSideButton;
@@ -64,14 +64,14 @@ public class InputManager : MonoBehaviour
         }
         else if (playerNumber == 2)
         {
-            buttons[0] = KeyCode.Joystick4Button0;
-            buttons[1] = KeyCode.Joystick4Button1;
-            buttons[2] = KeyCode.Joystick4Button2;
-            buttons[3] = KeyCode.Joystick4Button3;
-            buttons[4] = KeyCode.Joystick4Button4;
-            buttons[5] = KeyCode.Joystick4Button5;
-            buttons[6] = KeyCode.Joystick4Button6;
-            buttons[7] = KeyCode.Joystick4Button7;
+            buttons[0] = KeyCode.Joystick2Button0;
+            buttons[1] = KeyCode.Joystick2Button1;
+            buttons[2] = KeyCode.Joystick2Button2;
+            buttons[3] = KeyCode.Joystick2Button3;
+            buttons[4] = KeyCode.Joystick2Button4;
+            buttons[5] = KeyCode.Joystick2Button5;
+            buttons[6] = KeyCode.Joystick2Button6;
+            buttons[7] = KeyCode.Joystick2Button7;
         }
     }
 
