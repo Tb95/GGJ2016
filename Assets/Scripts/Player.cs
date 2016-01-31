@@ -104,12 +104,4 @@ public class Player : MonoBehaviour {
 		timeStartFade = Time.time;
 		shouldFade = true;
 	}
-
-    void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.tag == "Spider")
-        {
-            other.gameObject.GetComponent<Spider>().CollisionEnter(gameObject);
-        }
-    }
 }

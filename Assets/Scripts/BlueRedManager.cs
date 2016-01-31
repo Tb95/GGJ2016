@@ -12,19 +12,32 @@ public class BlueRedManager : MonoBehaviour {
 	int translateTimes = 200;
 	bool firstTimeTranslate = true;
 	int counter = 0;
+    float startTime;
 
 	public int restartAfter = 40;
+
+    void Start()
+    {
+        startTime = Time.time;
+    }
 
 	void Update () {
         if (Time.timeScale > 0)
         {
-			if (Time.time <= beginSection2) {
+            if (Time.time - startTime <= beginSection2)
+            {
 
-			} else if (Time.time > beginSection2 && Time.time <= beginSection3) {
+            }
+            else if (Time.time - startTime > beginSection2 && Time.time - startTime <= beginSection3)
+            {
 				transform.Rotate (0, 0.5f, 0);
-			} else if (Time.time > beginSection3 && Time.time <= beginSection4) {
+            }
+            else if (Time.time - startTime > beginSection3 && Time.time - startTime <= beginSection4)
+            {
 				transform.Rotate (0, Mathf.Abs (Mathf.Sin (Time.time)), 0);
-			} else if (Time.time > beginSection4 && Time.time <= restartAfter) {
+            }
+            else if (Time.time - startTime > beginSection4 && Time.time - startTime <= restartAfter)
+            {
 				if (transform.eulerAngles.y >= 180.0f && transform.eulerAngles.y <= 355.0f) {
 					transform.Rotate (0, 0.5f, 0);
 				} else if (transform.eulerAngles.y < 180.0f && transform.eulerAngles.y >= 0.5f) {

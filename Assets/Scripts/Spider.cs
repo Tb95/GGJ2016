@@ -88,7 +88,7 @@ public class Spider : MonoBehaviour {
 
 		// Play fall sound
 		gameObject.GetComponent<AudioSource>().clip = spiderFall;
-        gameObject.GetComponent<AudioSource>().PlayScheduled(2);
+        gameObject.GetComponent<AudioSource>().PlayScheduled(AudioSettings.dspTime + 1.0);
 
         myMovement = movement;
 	}
@@ -262,7 +262,8 @@ public class Spider : MonoBehaviour {
 	float lastAttackTime = 0;
     public float attackEveryTotSeconds = 0.5f;
     Movement myMovement;
-	void OnCollisionEnter(Collision other) {
+    void OnCollisionEnter(Collision other)
+    {
         CollisionEnter(other.gameObject);
 	}
 
