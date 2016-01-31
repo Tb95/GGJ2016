@@ -87,13 +87,12 @@ public class Player : MonoBehaviour {
     public void Hit(int damage)
     {
         vita -= damage;
+		health.ChangeHeartsNumber(vita);
         if (vita <= 0)
         {
             // Dieeee => GAMEOVER
 			gameOver();
         }
-        else
-            health.ChangeHeartsNumber(vita);
     }
 
 	void gameOver() {

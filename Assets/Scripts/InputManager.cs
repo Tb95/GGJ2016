@@ -45,6 +45,10 @@ public class InputManager : MonoBehaviour
 
     void Start()
     {
+		if (Application.loadedLevelName == "Coop")
+			numberOfPlayers = 2;
+		else
+			numberOfPlayers = 1;
         CurrentSideButton = Side.None;
         currentSidePosition = Side.None;
         player = GetComponent<Player>();
