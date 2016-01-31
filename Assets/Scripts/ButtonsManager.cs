@@ -8,6 +8,10 @@ public class ButtonsManager : MonoBehaviour {
 	public GameObject blueB;
 	public GameObject greenB;
 	public GameObject yellowB;
+	public GameObject leftB;
+	public GameObject rightB;
+	public GameObject upB;
+	public GameObject downB;
 
 	public enum Button {leftButton, rightButton, upButton, downButton, redButton, blueButton, yellowButton, greenButton};
 
@@ -62,6 +66,18 @@ public class ButtonsManager : MonoBehaviour {
 			break;
 		case Button.greenButton:
 			res = Instantiate (greenB);
+			break;
+		case Button.leftButton:
+			res = Instantiate (leftB);
+			break;
+		case Button.rightButton:
+			res = Instantiate (rightB);
+			break;
+		case Button.upButton:
+			res = Instantiate (upB);
+			break;
+		case Button.downButton:
+			res = Instantiate (downB);
 			break;
 		default:
 			res = Instantiate (blueB);
