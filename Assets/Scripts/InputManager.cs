@@ -298,18 +298,26 @@ public class InputManager : MonoBehaviour
                 }
 
 				Destroy (possibleSpiderCombos [i].spider.gameObject);
-                GetComponent<Health>().DeadEnemy(true);
+                GetComponent<Health>().DeadEnemy(true, possibleSpiderCombos[i].spider.health);
 				possibleSpiderCombos.Remove (possibleSpiderCombos [i]);
 				buttonTimeSequence.resetSequence();
 			}
 		}
 	}
 
-	public Side getRandomSide() {
-		if (Random.Range (0, 2) == 0)
-			return Side.Left;
-		else
-			return Side.Right;
+    static int leftSpawned = 0;
+    static int rightSpawned = 0;
+	public static Side getRandomSide() {
+        if (Random.Range(0, 100) > leftSpawned / (float)(leftSpawned + rightSpawned) * 100)
+        {
+            leftSpawned++;
+            return Side.Left;
+        }
+        else
+        {
+            rightSpawned++;
+            return Side.Right;
+        }
 	}
 
     public bool isLegalHit(Side spiderSide)
