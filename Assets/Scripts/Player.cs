@@ -97,11 +97,24 @@ public class Player : MonoBehaviour {
     }
 
 	void gameOver() {
-		// make spiders idle and disable spawner
-		InputManager.possibleSpiderCombos.ForEach(sc => sc.spider.movement = Spider.Movement.idle);
+		InputManager.numberOfPlayers--;
+		if (InputManager.numberOfPlayers == 0) {
+			// make spiders idle and disable spawner
+			InputManager.possibleSpiderCombos.ForEach (sc => sc.spider.movement = Spider.Movement.idle);
 
-		// show gameover plane and buttons
-		timeStartFade = Time.time;
-		shouldFade = true;
+			// show gameover plane and buttons
+			timeStartFade = Time.time;
+			shouldFade = true;
+		} else {
+			if (GetComponent<InputManager> ().playerNumber == 1) {
+				GameObject player2 = GameObject.Find ("Player2");
+				InputManager.possibleSpiderCombos.ForEach (sc => sc.spider.player = player2);
+				Destroy (gameObject);
+			} else {
+				GameObject player1 = GameObject.Find ("Player1");
+				InputManager.possibleSpiderCombos.ForEach (sc => sc.spider.player = player1);
+				Destroy (gameObject);
+			}
+		}
 	}
 }

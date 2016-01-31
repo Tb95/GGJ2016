@@ -15,6 +15,7 @@ public class InputManager : MonoBehaviour
     public float twoHandsCooldown;
     [Range(1, 2)]
     public int playerNumber;
+	static public int numberOfPlayers;
     
     Side _currentSideButton;
     Side CurrentSideButton
