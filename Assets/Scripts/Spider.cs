@@ -95,6 +95,8 @@ public class Spider : MonoBehaviour {
 	void Update () {
         if (!isDown)
         {
+			if (movement == Movement.idle)
+				return;
             if (animator.GetCurrentAnimatorStateInfo(0).IsName("Walk"))
             {
                 GetComponent<Collider>().enabled = true;
@@ -114,7 +116,7 @@ public class Spider : MonoBehaviour {
                     else if (movement == Movement.chaseZigZag)
                         chaseZigZag(player);
                     else if (movement == Movement.chaseArchs)
-                            chaseArchs(player);
+                        chaseArchs(player);
                 }
             }
         }

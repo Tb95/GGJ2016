@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -20,9 +21,13 @@ public class Player : MonoBehaviour {
 
 	public AudioClip antShoot;
 
-	public GameObject gameOverPlane;
-	public GameObject playAgainButton;
-	public GameObject menuButton;
+	public Image gameOverImage;
+	bool shouldFade = false;
+	float timeStartFade = 0;
+	float timeBetween = 0.02f;
+	float timeLastUpdate = 0;
+	float timeToRestart = 4.0f;
+	bool newSceneStarted = false;
 
     void Start ()
     {
@@ -34,6 +39,21 @@ public class Player : MonoBehaviour {
     void Update()
     {
         health.ChangeHeartsNumber(vita);
+
+		if (shouldFade) {
+			Color c = gameOverImage.color;
+			if ((c.a <= 0.98f) && (Time.time - timeLastUpdate >= timeBetween)) {
+				timeLastUpdate = Time.time;
+				Color newColor = new Color (c.r, c.g, c.b, c.a + 0.01f);
+				c = newColor;
+				gameOverImage.color = newColor;
+			}
+		}
+
+		if (Time.time - timeStartFade > timeToRestart && !newSceneStarted && shouldFade) {
+			newSceneStarted = true;
+			Application.LoadLevel ("MainMenu");
+		}
     }
 
     public void move (Vector3 movimento)
@@ -77,18 +97,11 @@ public class Player : MonoBehaviour {
     }
 
 	void gameOver() {
-		/*
-		// Load new scene
 		// make spiders idle and disable spawner
-		GetComponent<InputManager>().possibleSpiderCombos.ForEach(sc => sc.spider.movement = Spider.Movement.idle);
+		InputManager.possibleSpiderCombos.ForEach(sc => sc.spider.movement = Spider.Movement.idle);
 
 		// show gameover plane and buttons
-		gameOverPlane.SetActive(true);
-		playAgainButton.SetActive (true);
-		menuButton.SetActive (true);
-
-		// Destroy player
-		Destroy (gameObject);
-		*/
+		timeStartFade = Time.time;
+		shouldFade = true;
 	}
 }
