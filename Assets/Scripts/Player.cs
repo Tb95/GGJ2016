@@ -22,7 +22,7 @@ public class Player : MonoBehaviour {
 	public AudioClip antShoot;
 
 	public Image gameOverImage;
-	bool shouldFade = false;
+	public bool shouldFade = false;
 	float timeStartFade = 0;
 	float timeBetween = 0.02f;
 	float timeLastUpdate = 0;

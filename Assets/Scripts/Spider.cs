@@ -97,7 +97,7 @@ public class Spider : MonoBehaviour {
 	void Update () {
         if (!isDown)
         {
-			if (movement == Movement.idle)
+			if (movement == Movement.idle || player.GetComponent<Player>().shouldFade)
 				return;
             if (animator.GetCurrentAnimatorStateInfo(0).IsName("Walk"))
             {
