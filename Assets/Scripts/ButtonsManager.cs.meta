@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: ec6c84b9d17d4430796e63b957584dcc
-timeCreated: 1454192815
+timeCreated: 1454201574
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
@@ -9,6 +9,10 @@ MonoImporter:
   - blueB: {fileID: 175226, guid: 91ebb6c9ae8af41fbbefa9a87cdab816, type: 2}
   - greenB: {fileID: 188140, guid: ff8812595db8648b5ae63075af49ddec, type: 2}
   - yellowB: {fileID: 145960, guid: effe530a9c3a24aa984a57e50ca82142, type: 2}
+  - leftB: {fileID: 145960, guid: bc5259cbfc16f43089d16af5300198c8, type: 2}
+  - rightB: {fileID: 145960, guid: 8b48e6b19d9bf46ac84513f00fe37e48, type: 2}
+  - upB: {fileID: 145960, guid: 29abc22deeda84b93a787a36db3051df, type: 2}
+  - downB: {fileID: 145960, guid: 63211b4cded4145f595ff1034fbd2ecb, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
