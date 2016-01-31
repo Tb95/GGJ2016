@@ -45,7 +45,7 @@ public class Spider : MonoBehaviour {
     SpawnGameObjects spawner;
 	public GameObject comboText;
 	GameObject spiderTrail;
-	GameObject trail;
+	public GameObject trail;
 
 	// Use this for initialization
 	void Start () {
@@ -204,7 +204,7 @@ public class Spider : MonoBehaviour {
 	}
 
 	float timeOfGettingDown = 0;
-	List<GameObject> buts;
+	public List<GameObject> buts;
 	public void Hit(int damage, GameObject playerThatHit) {
 		health -= damage;
 		if (health <= 0) {

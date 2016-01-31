@@ -263,12 +263,14 @@ public class InputManager : MonoBehaviour
 		for (int i = 0; i < possibleSpiderCombos.Count; i++) {
 			if (buttonTimeSequence.isSequenceOK(possibleSpiderCombos[i], 3.0f)) {
 				// SPIDER EXPLOSION!!!
-                		possibleSpiderCombos[i].spider.GetSpawner().DeadEnemy();
-				// Togli la combo
-				var children = new List<GameObject>();
-				foreach (Transform child in possibleSpiderCombos [i].spider.comboText.transform) children.Add(child.gameObject);
-				children.ForEach(child => Destroy(child));
-				possibleSpiderCombos [i].spider.comboText.SetActive (false);
+                possibleSpiderCombos[i].spider.GetSpawner().DeadEnemy();
+
+				// Togli la combo e il trail renderer
+				Destroy(possibleSpiderCombos[i].spider.trail.gameObject);
+				for (int c = 0; c < possibleSpiderCombos[i].spider.buts.Count; c++) {
+					Destroy (possibleSpiderCombos[i].spider.buts [c]);
+				}
+
 				Destroy (possibleSpiderCombos [i].spider.gameObject);
                 GetComponent<Health>().DeadEnemy(true);
 				possibleSpiderCombos.Remove (possibleSpiderCombos [i]);
