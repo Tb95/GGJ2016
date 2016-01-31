@@ -107,7 +107,7 @@ public class Spider : MonoBehaviour {
                 // If dist < 0.3 : do nothing
                 // If 0.3 < dist < 2 : just chase
                 // If 2 < dist : perform movement
-                if (movement != Movement.idle && dist <= chaseTriggerDistance)
+                if (movement != Movement.idle && dist >= doNothingTriggerDistance && dist <= chaseTriggerDistance)
                 {
                     chase(player);
                 }
@@ -120,7 +120,8 @@ public class Spider : MonoBehaviour {
                     else if (movement == Movement.chaseArchs)
                         chaseArchs(player);
                 }
-                else if (dist > 5 * radiusForAttack)
+                
+                if (dist > radiusForAttack)
                 {
                     movement = myMovement;
                 }
@@ -262,37 +263,34 @@ public class Spider : MonoBehaviour {
     public float attackEveryTotSeconds = 0.5f;
     Movement myMovement;
 	void OnCollisionEnter(Collision other) {
-		if (other.gameObject.tag == "Player" && (Time.time - lastAttackTime) > attackEveryTotSeconds) {
-			other.gameObject.GetComponent<Player> ().Hit (1);
+        CollisionEnter(other.gameObject);
+	}
+
+    public void CollisionEnter(GameObject other)
+    {
+        if (gameObject.tag == "Player" && (Time.time - lastAttackTime) > attackEveryTotSeconds)
+        {
+            gameObject.GetComponent<Player>().Hit(1);
             lastAttackTime = Time.time;
 
-            movement = Movement.idle;
-		}
-	}
+            //movement = Movement.idle;
+            player = other;
+        }
+    }
 
 	void OnCollisionStay(Collision other) {
 		if (other.gameObject.tag == "Player" && (Time.time - lastAttackTime) > attackEveryTotSeconds) {
             other.gameObject.GetComponent<Player>().Hit(1);
 
-            movement = Movement.idle;
+            //movement = Movement.idle;
 
 			// Play sound
 			gameObject.GetComponent<AudioSource>().clip = spiderCatch;
 			gameObject.GetComponent<AudioSource> ().Play ();
 
 			lastAttackTime = Time.time;
-
-            
 		}
 	}
-
-    void OnCollisionExit(Collision other)
-    {
-        if (other.gameObject.tag == "Player")
-        {
-            movement = myMovement;
-        }
-    }
 
 	float timeOfGettingDown = 0;
     public List<GameObject> butsPlayer1 = new List<GameObject>();

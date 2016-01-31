@@ -117,4 +117,12 @@ public class Player : MonoBehaviour {
 			}
 		}
 	}
+
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag == "Spider")
+        {
+            other.gameObject.GetComponent<Spider>().CollisionEnter(gameObject);
+        }
+    }
 }
