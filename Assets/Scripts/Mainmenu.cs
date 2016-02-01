@@ -31,8 +31,14 @@ public class Mainmenu : MonoBehaviour {
     List<Selectable> buttons;
     int currentButtonIndex;
     bool dPadPressed;
+    string joypadType;
 
 	void Start () {
+        if (Input.GetJoystickNames()[0].StartsWith("Controller (Xbox One"))
+            joypadType = "One";
+        else
+            joypadType = "";
+
         Exitmenu.gameObject.SetActive (false);
         Startmenu.gameObject.SetActive (false);
         Optionmenu.gameObject.SetActive (false);
@@ -149,10 +155,10 @@ public class Mainmenu : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Joystick1Button0) && ButtonOn is Button)
             (ButtonOn as Button).onClick.Invoke();
 
-        if (Mathf.Abs(Input.GetAxis("DPadX1")) > 0.5f && ButtonOn is Slider)
-            (ButtonOn as Slider).value += Input.GetAxis("DPadX1") * 0.5f;
+        if (Mathf.Abs(Input.GetAxis("DPadX1" + joypadType)) > 0.5f && ButtonOn is Slider)
+            (ButtonOn as Slider).value += Input.GetAxis("DPadX1" + joypadType) * 0.5f;
 
-        if (!dPadPressed && Input.GetAxis("DPadY1") < -0.5f)
+        if (!dPadPressed && Input.GetAxis("DPadY1" + joypadType) < -0.5f)
         {
             dPadPressed = true;
             currentButtonIndex++;
@@ -160,7 +166,7 @@ public class Mainmenu : MonoBehaviour {
                 currentButtonIndex = 0;
             ButtonOn = buttons[currentButtonIndex];
         }
-        else if (!dPadPressed && Input.GetAxis("DPadY1") > 0.5f)
+        else if (!dPadPressed && Input.GetAxis("DPadY1" + joypadType) > 0.5f)
         {
             dPadPressed = true;
             currentButtonIndex--;
@@ -168,7 +174,7 @@ public class Mainmenu : MonoBehaviour {
                 currentButtonIndex = buttons.Count - 1;
             ButtonOn = buttons[currentButtonIndex];
         }
-        else if (Mathf.Abs(Input.GetAxis("DPadY1")) < 0.3f)
+        else if (Mathf.Abs(Input.GetAxis("DPadY1" + joypadType)) < 0.3f)
             dPadPressed = false;
 	}
 }

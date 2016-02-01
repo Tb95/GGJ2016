@@ -32,7 +32,6 @@ public class ButtonTimeSequence {
 		bool isOK = true;
 		for (int i = 0; i < spiderCombo.buttonsList.Count; i++) {
 			if (buttonTimeList [i].button != spiderCombo.buttonsList [spiderCombo.buttonsList.Count - 1 - i]) {
-                Debug.Log(isOK);
 				isOK = false;
 			}
 		}

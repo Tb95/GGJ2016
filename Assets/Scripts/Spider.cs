@@ -95,10 +95,13 @@ public class Spider : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (player == null)
+            return;
+
         if (!isDown)
         {
-			if (movement == Movement.idle || player.GetComponent<Player>().shouldFade)
-				return;
+            //if (movement == Movement.idle || player.GetComponent<Player>().shouldFade)
+            //    return;
             if (animator.GetCurrentAnimatorStateInfo(0).IsName("Walk"))
             {
                 GetComponent<Collider>().enabled = true;
@@ -146,19 +149,27 @@ public class Spider : MonoBehaviour {
             bool activateTrail2 = false;
             //PLAYER1
 			List<SpiderCombo> sc = InputManager.possibleSpiderCombos.FindAll(aSc => aSc.spider.isDown);
-			sc.Sort((c1, c2) => (int)Vector3.Distance(player1.transform.position, c1.spider.transform.position) - (int)Vector3.Distance(player1.transform.position, c2.spider.transform.position));
-			if (sc [0].spider == this) {
-                activateTrail1 = true;
-				for (int i = 0; i < butsPlayer1.Count; i++) {
-					butsPlayer1 [i].SetActive (true);
-				}
-			} else {
-                activateTrail1 = false;
+            if (player1 != null)
+            {
+                sc.Sort((c1, c2) => (int)Vector3.Distance(player1.transform.position, c1.spider.transform.position) - (int)Vector3.Distance(player1.transform.position, c2.spider.transform.position));
+                if (sc[0].spider == this)
+                {
+                    activateTrail1 = true;
+                    for (int i = 0; i < butsPlayer1.Count; i++)
+                    {
+                        butsPlayer1[i].SetActive(true);
+                    }
+                }
+                else
+                {
+                    activateTrail1 = false;
 
-				for (int i = 0; i < butsPlayer1.Count; i++) {
-					butsPlayer1 [i].SetActive (false);
-				}
-			}
+                    for (int i = 0; i < butsPlayer1.Count; i++)
+                    {
+                        butsPlayer1[i].SetActive(false);
+                    }
+                }
+            }
 
             //PLAYER2
             if (player2 != null)

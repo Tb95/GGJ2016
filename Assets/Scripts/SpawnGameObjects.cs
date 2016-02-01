@@ -73,6 +73,7 @@ public class SpawnGameObjects : MonoBehaviour {
     public void DeadEnemy()
     {
         enemyNumber--;
+        savedTime = Time.realtimeSinceStartup;
     }
 
     [System.Serializable]

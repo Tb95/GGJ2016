@@ -4,6 +4,7 @@ public class LoopRoundMusic : MonoBehaviour
 {
     public AudioClip startClip;
     public AudioClip loopClip;
+    public AudioClip gameOverClip;
 
     bool isLooping;
     AudioSource audioSource;
@@ -25,5 +26,13 @@ public class LoopRoundMusic : MonoBehaviour
             audioSource.loop = true;
             isLooping = true;
         }
+    }
+
+    public void GameOverSound()
+    {
+        audioSource.clip = gameOverClip;
+        audioSource.loop = false;
+        audioSource.Play();
+        isLooping = true;
     }
 }

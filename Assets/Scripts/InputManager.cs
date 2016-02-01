@@ -42,13 +42,20 @@ public class InputManager : MonoBehaviour
     float nextTwoHands;
     KeyCode[] buttons;
     bool dPadPressed;
+    string joypadType;
 
     void Start()
     {
-		if (Application.loadedLevelName == "Coop")
+        if (Input.GetJoystickNames()[0].StartsWith("Controller (Xbox One"))
+            joypadType = "One";
+        else
+            joypadType = "";
+
+		if (Application.loadedLevel == 2)
 			numberOfPlayers = 2;
-		else
+        else if (Application.loadedLevel == 1)
 			numberOfPlayers = 1;
+
         CurrentSideButton = Side.None;
         currentSidePosition = Side.None;
         player = GetComponent<Player>();
@@ -100,8 +107,8 @@ public class InputManager : MonoBehaviour
 
         if (Input.GetAxis("HorizontalL" + playerNumber) > SENSITIVITY || Input.GetAxis("HorizontalL" + playerNumber) < -SENSITIVITY ||
             Input.GetAxis("VerticalL" + playerNumber) > SENSITIVITY || Input.GetAxis("VerticalL" + playerNumber) < -SENSITIVITY ||
-            Input.GetAxis("DPadX" + playerNumber) > SENSITIVITY || Input.GetAxis("DPadX" + playerNumber) < -SENSITIVITY ||
-            Input.GetAxis("DPadY" + playerNumber) > SENSITIVITY || Input.GetAxis("DPadY" + playerNumber) < -SENSITIVITY ||
+            Input.GetAxis("DPadX" + playerNumber + joypadType) > SENSITIVITY || Input.GetAxis("DPadX" + playerNumber + joypadType) < -SENSITIVITY ||
+            Input.GetAxis("DPadY" + playerNumber + joypadType) > SENSITIVITY || Input.GetAxis("DPadY" + playerNumber + joypadType) < -SENSITIVITY ||
             Input.GetAxis("TriggerL" + playerNumber) != 0 || Input.GetKey(buttons[4]))
         {
             CurrentSideButton = Side.Left;
@@ -202,51 +209,46 @@ public class InputManager : MonoBehaviour
 
 	void UpdateSequence()
 	{
-        if (!dPadPressed && Input.GetAxis("DPadY" + playerNumber) < -0.5f)
+        if (!dPadPressed && Input.GetAxis("DPadY" + playerNumber + joypadType) < -0.5f)
         {
             dPadPressed = true;
-            Debug.Log("down");
 
             ButtonTimeSequence.ButtonTime buttonTime;
             buttonTime.button = ButtonsManager.Button.downButton;
             buttonTime.timeFromStart = Time.realtimeSinceStartup;
             buttonTimeSequence.prepend(buttonTime);
         }
-        else if (!dPadPressed && Input.GetAxis("DPadY" + playerNumber) > 0.5f)
+        else if (!dPadPressed && Input.GetAxis("DPadY" + playerNumber + joypadType) > 0.5f)
         {
             dPadPressed = true;
-            Debug.Log("up");
 
             ButtonTimeSequence.ButtonTime buttonTime;
             buttonTime.button = ButtonsManager.Button.upButton;
             buttonTime.timeFromStart = Time.realtimeSinceStartup;
             buttonTimeSequence.prepend(buttonTime);
         }
-        else if (!dPadPressed && Input.GetAxis("DPadX" + playerNumber) > 0.5f)
+        else if (!dPadPressed && Input.GetAxis("DPadX" + playerNumber + joypadType) > 0.5f)
         {
             dPadPressed = true;
-            Debug.Log("right");
 
             ButtonTimeSequence.ButtonTime buttonTime;
             buttonTime.button = ButtonsManager.Button.rightButton;
             buttonTime.timeFromStart = Time.realtimeSinceStartup;
             buttonTimeSequence.prepend(buttonTime);
         }
-        else if (!dPadPressed && Input.GetAxis("DPadX" + playerNumber) < -0.5f)
+        else if (!dPadPressed && Input.GetAxis("DPadX" + playerNumber + joypadType) < -0.5f)
         {
             dPadPressed = true;
-            Debug.Log("left");
 
             ButtonTimeSequence.ButtonTime buttonTime;
             buttonTime.button = ButtonsManager.Button.leftButton;
             buttonTime.timeFromStart = Time.realtimeSinceStartup;
             buttonTimeSequence.prepend(buttonTime);
         }
-        else if (Mathf.Abs(Input.GetAxis("DPadY" + playerNumber)) < 0.3f && Mathf.Abs(Input.GetAxis("DPadX" + playerNumber)) < 0.3f)
+        else if (Mathf.Abs(Input.GetAxis("DPadY" + playerNumber + joypadType)) < 0.3f && Mathf.Abs(Input.GetAxis("DPadX" + playerNumber + joypadType)) < 0.3f)
             dPadPressed = false;
 
 		if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(buttons[3])) {
-			Debug.Log("yellow");
 
 			ButtonTimeSequence.ButtonTime buttonTime;
 			buttonTime.button = ButtonsManager.Button.yellowButton;
@@ -255,7 +257,6 @@ public class InputManager : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(buttons[1]))
         {
-			Debug.Log("red");
 
 			ButtonTimeSequence.ButtonTime buttonTime;
 			buttonTime.button = ButtonsManager.Button.redButton;
@@ -264,7 +265,6 @@ public class InputManager : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.C) || Input.GetKeyDown(buttons[0]))
         {
-			Debug.Log("green");
 
 			ButtonTimeSequence.ButtonTime buttonTime;
 			buttonTime.button = ButtonsManager.Button.greenButton;
@@ -273,7 +273,6 @@ public class InputManager : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.V) || Input.GetKeyDown(buttons[2]))
         {
-			Debug.Log("blue");
 
 			ButtonTimeSequence.ButtonTime buttonTime;
 			buttonTime.button = ButtonsManager.Button.blueButton;
