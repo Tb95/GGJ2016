@@ -46,7 +46,7 @@ public class InputManager : MonoBehaviour
 
     void Start()
     {
-        if (Input.GetJoystickNames()[0].StartsWith("Controller (Xbox One"))
+        if (Input.GetJoystickNames().Length > 0 && Input.GetJoystickNames()[0].StartsWith("Controller (Xbox One"))
             joypadType = "One";
         else
             joypadType = "";
